@@ -1,0 +1,1908 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>АҒЫЛШЫН ТІЛІ КВАЛТЕСТ 2026 — QUIZIZZ</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --bg-main: #090d16;
+      --bg-card: #151a2d;
+      --tile-a: #2563eb;
+      --tile-a-dark: #1d4ed8;
+      --tile-b: #0891b2;
+      --tile-b-dark: #0e7490;
+      --tile-c: #d97706;
+      --tile-c-dark: #b45309;
+      --tile-d: #e11d48;
+      --tile-d-dark: #be123c;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-main);
+      background-image:
+        radial-gradient(circle at 10% 12%, rgba(139, 92, 246, 0.18) 0%, transparent 35%),
+        radial-gradient(circle at 90% 15%, rgba(6, 182, 212, 0.15) 0%, transparent 35%),
+        radial-gradient(circle at 80% 85%, rgba(244, 63, 94, 0.14) 0%, transparent 38%),
+        radial-gradient(circle at 15% 85%, rgba(16, 185, 129, 0.12) 0%, transparent 35%);
+      background-attachment: fixed;
+      color: #ffffff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .card-surface {
+      background: rgba(21, 26, 45, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(139, 92, 246, 0.22);
+    }
+
+    /* Quizizz 3D Answer Tiles */
+    .quiz-tile {
+      transition: transform 0.14s cubic-bezier(0.22, 1, 0.36, 1), filter 0.14s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .quiz-tile:not(:disabled):hover {
+      transform: translateY(-3px);
+      filter: brightness(1.08);
+    }
+    .quiz-tile:not(:disabled):active {
+      transform: translateY(2px);
+    }
+
+    .tile-0 { background-color: var(--tile-a); box-shadow: 0 6px 0 var(--tile-a-dark); }
+    .tile-1 { background-color: var(--tile-b); box-shadow: 0 6px 0 var(--tile-b-dark); }
+    .tile-2 { background-color: var(--tile-c); box-shadow: 0 6px 0 var(--tile-c-dark); }
+    .tile-3 { background-color: var(--tile-d); box-shadow: 0 6px 0 var(--tile-d-dark); }
+
+    .tile-correct {
+      background-color: #16a34a !important;
+      box-shadow: 0 6px 0 #15803d, 0 0 26px rgba(34, 197, 94, 0.55) !important;
+      animation: popOk 0.32s ease;
+    }
+    .tile-wrong {
+      background-color: #dc2626 !important;
+      box-shadow: 0 6px 0 #991b1b, 0 0 26px rgba(239, 68, 68, 0.55) !important;
+      animation: shakeErr 0.36s ease;
+    }
+    .tile-dimmed {
+      opacity: 0.3;
+      filter: grayscale(35%);
+    }
+
+    @keyframes popOk {
+      0% { transform: scale(1); }
+      45% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+    @keyframes shakeErr {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-7px); }
+      40% { transform: translateX(7px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+    @keyframes scoreUp {
+      0% { opacity: 1; transform: translate(-50%, 0) scale(0.85); }
+      100% { opacity: 0; transform: translate(-50%, -44px) scale(1.18); }
+    }
+    .score-float {
+      animation: scoreUp 0.9s ease-out forwards;
+      pointer-events: none;
+    }
+    @keyframes streakPulse {
+      0%, 100% { box-shadow: 0 0 10px rgba(245, 158, 11, 0.45); }
+      50% { box-shadow: 0 0 24px rgba(245, 158, 11, 0.95); }
+    }
+    .streak-glow {
+      animation: streakPulse 1.35s infinite;
+    }
+
+    @keyframes confettiFall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    .confetti-piece {
+      position: fixed;
+      top: -12px;
+      width: 10px;
+      height: 14px;
+      border-radius: 3px;
+      z-index: 60;
+      pointer-events: none;
+      animation: confettiFall linear forwards;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 7px; height: 7px; }
+    ::-webkit-scrollbar-track { background: #090d16; }
+    ::-webkit-scrollbar-thumb { background: #28304f; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+  </style>
+</head>
+<body class="antialiased selection:bg-fuchsia-500 selection:text-white">
+  <div id="confetti-layer"></div>
+
+  <div id="app" class="min-h-screen flex flex-col">
+
+    <!-- =================================================================== -->
+    <!-- TOP GLOBAL HEADER (HOME)                                            -->
+    <!-- =================================================================== -->
+    <main id="screen-home" class="flex-1 w-full max-w-6xl mx-auto px-3 sm:px-6 py-5 sm:py-8 flex flex-col">
+      <header class="flex flex-wrap items-center justify-between gap-3 mb-5">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 flex items-center justify-center text-2xl shadow-lg shadow-purple-500/30">
+            🇬🇧
+          </div>
+          <div>
+            <div class="text-[11px] font-extrabold uppercase tracking-widest text-cyan-300">
+              Квалтест / ОЗП / ҰБТ 2026 • English Pro
+            </div>
+            <h1 class="text-lg sm:text-2xl font-black tracking-tight bg-gradient-to-r from-white via-indigo-100 to-cyan-200 bg-clip-text text-transparent">
+              АҒЫЛШЫН ТІЛІ 2026 — QUIZIZZ ТРЕНАЖЕР
+            </h1>
+          </div>
+        </div>
+
+        <button id="btn-sound-home" onclick="toggleSound()"
+          class="px-3.5 py-2 rounded-xl border border-emerald-400/40 bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-200 text-xs sm:text-sm font-bold flex items-center gap-2 transition">
+          <span id="sound-icon-home">🔊</span>
+          <span id="sound-text-home">Дыбыс: Қосулы</span>
+        </button>
+      </header>
+
+      <!-- Dashboard Stats -->
+      <section class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+        <div class="card-surface rounded-2xl p-3.5 sm:p-4">
+          <div class="text-[11px] sm:text-xs font-bold text-indigo-300/80 uppercase">Сұрақтар қоры</div>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span id="dash-total-q" class="text-2xl sm:text-3xl font-black text-white">185</span>
+            <span class="text-xs font-bold text-cyan-300">12 мәтін • 6 слив</span>
+          </div>
+        </div>
+
+        <div class="card-surface rounded-2xl p-3.5 sm:p-4">
+          <div class="text-[11px] sm:text-xs font-bold text-indigo-300/80 uppercase">Үздік Емтихан</div>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span id="dash-best-exam" class="text-2xl sm:text-3xl font-black text-amber-300">—</span>
+            <span id="dash-exam-tag" class="text-xs font-bold text-indigo-300/70">Мақсат: 40+/50</span>
+          </div>
+        </div>
+
+        <div class="card-surface rounded-2xl p-3.5 sm:p-4">
+          <div class="text-[11px] sm:text-xs font-bold text-indigo-300/80 uppercase">Шешілген сұрақтар</div>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span id="dash-solved" class="text-2xl sm:text-3xl font-black text-emerald-400">0</span>
+            <span class="text-xs font-bold text-emerald-300/75">талданған</span>
+          </div>
+        </div>
+
+        <div class="card-surface rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between border-rose-400/35">
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-[11px] sm:text-xs font-bold text-rose-300 uppercase">Қателер банкі</span>
+            <span id="dash-mistakes-count" class="px-2 py-0.5 rounded-full bg-rose-500/25 text-rose-200 text-xs font-black">0</span>
+          </div>
+          <div class="mt-2 flex items-center gap-1.5">
+            <button id="btn-dash-mistakes" onclick="startMistakesQuiz()"
+              class="flex-1 py-1.5 px-2.5 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-400 hover:to-amber-400 disabled:opacity-35 disabled:cursor-not-allowed text-white text-xs font-extrabold transition">
+              🔄 Қатемен жұмыс
+            </button>
+            <button id="btn-clear-mistakes" onclick="openClearMistakesModal()" title="Қателер банкін тазалау"
+              class="hidden px-2 py-1.5 rounded-xl bg-[#090d16] hover:bg-rose-500/25 border border-rose-400/30 text-rose-200 text-xs font-bold transition">
+              🗑
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Mode Selector Bar (Game vs Study) -->
+      <div class="card-surface rounded-2xl p-3 sm:p-4 mb-5 flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div class="flex bg-[#090d16] p-1 rounded-xl border border-indigo-500/30 w-full md:w-auto">
+          <button id="mode-btn-game" onclick="setMode('game')"
+            class="flex-1 md:flex-none px-4 py-2 rounded-lg text-xs sm:text-sm font-extrabold transition bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow">
+            🎮 Ойын (60с, 🔥 Streak)
+          </button>
+          <button id="mode-btn-study" onclick="setMode('study')"
+            class="flex-1 md:flex-none px-4 py-2 rounded-lg text-xs sm:text-sm font-extrabold transition text-indigo-300 hover:text-white">
+            📚 Жаттау (Түсіндірме + Қазақша)
+          </button>
+        </div>
+        <div id="mode-desc" class="text-xs text-indigo-200/80">
+          🔥 <strong>Ойын режимі:</strong> Әр сұраққа 60 секунд, жылдамдық бонусы (+1000 ұпай) және streak сериясы.
+        </div>
+      </div>
+
+      <!-- Main Navigation Tabs -->
+      <nav class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
+        <button id="nav-tab-slivs" onclick="switchTab('slivs')"
+          class="py-3 px-3 rounded-2xl font-extrabold text-xs sm:text-sm transition border shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600 border-indigo-400/60 text-white">
+          📝 2026 Сливтер (4 Бөлім)
+        </button>
+        <button id="nav-tab-texts" onclick="switchTab('texts')"
+          class="py-3 px-3 rounded-2xl font-extrabold text-xs sm:text-sm transition border bg-[#151a2d] border-indigo-500/25 text-indigo-200 hover:bg-indigo-900/40">
+          📖 12 Мәтін Базасы
+        </button>
+        <button id="nav-tab-exam" onclick="switchTab('exam')"
+          class="py-3 px-3 rounded-2xl font-extrabold text-xs sm:text-sm transition border bg-[#151a2d] border-indigo-500/25 text-indigo-200 hover:bg-indigo-900/40">
+          🏆 50 Сұрақ Емтихан
+        </button>
+        <button id="nav-tab-crib" onclick="switchTab('crib')"
+          class="py-3 px-3 rounded-2xl font-extrabold text-xs sm:text-sm transition border bg-[#151a2d] border-indigo-500/25 text-indigo-200 hover:bg-indigo-900/40">
+          ⚡ Шпаргалка
+        </button>
+      </nav>
+
+      <!-- TAB 1: 2026 SLIVS / GRAMMAR / VOCABULARY -->
+      <section id="tab-panel-slivs" class="space-y-4">
+        <div id="slivs-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </section>
+
+      <!-- TAB 2: READING TEXTS HUB -->
+      <section id="tab-panel-texts" class="hidden space-y-4">
+        <div class="card-surface rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-cyan-400/35">
+          <div>
+            <h2 class="text-lg sm:text-xl font-black text-white">📖 Барлық 12 Ресми 2026 Мәтіндер (Reading)</h2>
+            <p class="text-xs sm:text-sm text-indigo-200/80 mt-0.5">
+              Толық түпнұсқа мәтіндері, қазақша аудармасы және нақты емтихан сұрақтарымен жаттығыңыз.
+            </p>
+          </div>
+          <button onclick="startAllTextsMarathon()"
+            class="shrink-0 px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 via-rose-500 to-indigo-600 hover:brightness-110 text-white font-extrabold text-xs sm:text-sm shadow-lg transition transform hover:-translate-y-0.5">
+            🔥 Барлық мәтіндер марафоны
+          </button>
+        </div>
+        <div id="texts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5"></div>
+      </section>
+
+      <!-- TAB 3: 50-QUESTION EXAM SIMULATOR -->
+      <section id="tab-panel-exam" class="hidden">
+        <div class="card-surface rounded-3xl p-6 sm:p-8 border-amber-400/40 shadow-2xl max-w-3xl mx-auto text-center">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-200 text-xs font-extrabold uppercase tracking-wider mb-4">
+            🎯 Ресми Біліктілік Тесті Форматы
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-black text-white">50 Сұрақ Ағылшын Тілі Емтиханы</h2>
+          <p class="text-sm sm:text-base text-indigo-200/85 mt-2 max-w-xl mx-auto">
+            Жүйе 2026 сливтерден <strong>40 грамматика және лексика</strong> сұрағын және 12 мәтін ішінен <strong>2 толық мәтінді (10 сұрақ)</strong> таңдап, ресми 50 сұрақтық тест құрастырады.
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6 text-left">
+            <div class="bg-[#090d16] border border-indigo-500/30 rounded-2xl p-4">
+              <div class="text-xl mb-1">📝</div>
+              <div class="font-extrabold text-white text-sm">40 + 10 = 50 сұрақ</div>
+              <div class="text-xs text-indigo-300/80 mt-0.5">Грамматика, лексика және 2 мәтін</div>
+            </div>
+            <div class="bg-[#090d16] border border-cyan-500/30 rounded-2xl p-4">
+              <div class="text-xl mb-1">⏱️</div>
+              <div class="font-extrabold text-white text-sm">60 минут таймер</div>
+              <div class="text-xs text-indigo-300/80 mt-0.5">Емтихандық таймер және навигатор</div>
+            </div>
+            <div class="bg-[#090d16] border border-emerald-500/30 rounded-2xl p-4">
+              <div class="text-xl mb-1">🏆</div>
+              <div class="font-extrabold text-white text-sm">Меже: 40+/50 (80%)</div>
+              <div class="text-xs text-indigo-300/80 mt-0.5">Педагог-зерттеуші / шебер шегі</div>
+            </div>
+          </div>
+
+          <div class="mt-7 flex flex-wrap items-center justify-center gap-3">
+            <button onclick="startExamSimulator()"
+              class="px-7 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-rose-500 to-indigo-600 hover:brightness-110 text-white font-black text-base shadow-xl shadow-rose-500/25 transition transform hover:-translate-y-0.5">
+              🚀 Емтиханды бастау (50 сұрақ)
+            </button>
+          </div>
+          <div id="exam-best-note" class="mt-4 text-xs font-bold text-amber-300"></div>
+        </div>
+      </section>
+
+      <!-- TAB 4: INTERACTIVE CRIB-SHEET / ШПАРГАЛКА -->
+      <section id="tab-panel-crib" class="hidden space-y-5">
+        <div class="card-surface rounded-3xl p-4 sm:p-5">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+            <div>
+              <div class="text-[11px] font-extrabold uppercase tracking-wider text-cyan-300">⚡ Квалтест 2026 Алтын Ережелері</div>
+              <h2 class="text-lg sm:text-xl font-black text-white">Интерактивті Шпаргалка (Phrasal Verbs, Idioms, Grammar Rules)</h2>
+            </div>
+          </div>
+          <div class="relative">
+            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-indigo-300">🔍</span>
+            <input id="crib-search" type="text" oninput="renderCribSheet()"
+              placeholder="Іздеу (мысалы: look down on, put out, hardly had, decathlon, nauryz, passive, inversion)..."
+              class="w-full pl-10 pr-4 py-3 rounded-2xl bg-[#090d16] border border-indigo-500/40 focus:border-cyan-400 focus:outline-none text-sm text-white placeholder-indigo-300/50" />
+          </div>
+        </div>
+        <div id="crib-list" class="grid grid-cols-1 md:grid-cols-2 gap-3.5"></div>
+      </section>
+
+      <footer class="mt-10 pt-4 border-t border-white/10 text-center text-xs text-indigo-300/60">
+        Пернетақта: <kbd class="px-1.5 py-0.5 rounded bg-[#151a2d] border border-indigo-500/30 text-indigo-200">1–4</kbd> / <kbd class="px-1.5 py-0.5 rounded bg-[#151a2d] border border-indigo-500/30 text-indigo-200">A–D</kbd> — жауап • <kbd class="px-1.5 py-0.5 rounded bg-[#151a2d] border border-indigo-500/30 text-indigo-200">Enter / Space</kbd> — келесі сұрақ
+      </footer>
+    </main>
+
+    <!-- =================================================================== -->
+    <!-- QUIZ PLAY SCREEN                                                    -->
+    <!-- =================================================================== -->
+    <section id="screen-quiz" class="hidden flex-1 w-full max-w-5xl mx-auto px-3 sm:px-6 py-4 flex flex-col">
+      <!-- Quiz Header / HUD -->
+      <header class="card-surface rounded-2xl p-3 sm:p-4 shadow-xl mb-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 sm:gap-3">
+          <div class="flex items-center gap-2.5">
+            <button onclick="openExitModal()" title="Шығу"
+              class="w-10 h-10 rounded-xl bg-[#090d16] hover:bg-rose-500/25 border border-indigo-500/30 text-indigo-200 hover:text-rose-200 font-bold transition flex items-center justify-center">
+              ✕
+            </button>
+            <div>
+              <div id="hud-title" class="text-xs font-bold text-cyan-300 truncate max-w-[165px] sm:max-w-[320px]"></div>
+              <div class="text-sm sm:text-base font-extrabold text-white flex items-center gap-2">
+                <span>Сұрақ <span id="hud-counter" class="text-fuchsia-300">1 / 30</span></span>
+                <span id="hud-exam-goal" class="hidden px-2 py-0.5 rounded-lg bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-extrabold">0 / 40 меже</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 relative">
+            <div id="hud-streak-box" class="hidden items-center gap-1 px-2.5 py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/50 text-amber-300 font-extrabold text-xs sm:text-sm">
+              <span>🔥</span><span id="hud-streak">0</span>
+            </div>
+
+            <div id="hud-score-box" class="relative px-3 py-1.5 rounded-xl bg-[#090d16] border border-fuchsia-500/40 text-xs sm:text-sm font-extrabold text-fuchsia-200">
+              ⭐ <span id="hud-score">0</span>
+              <div id="score-popup-anchor" class="absolute -top-2 left-1/2"></div>
+            </div>
+
+            <div id="hud-timer-box" class="px-3 py-1.5 rounded-xl bg-[#090d16] border border-cyan-400/40 text-cyan-300 font-extrabold text-xs sm:text-sm min-w-[70px] text-center">
+              ⏱ <span id="hud-timer">60с</span>
+            </div>
+
+            <button onclick="toggleSound()" id="btn-sound-quiz" title="Дыбыс"
+              class="w-9 h-9 rounded-xl bg-[#090d16] hover:bg-indigo-800/60 border border-indigo-500/30 text-sm flex items-center justify-center transition">
+              🔊
+            </button>
+          </div>
+        </div>
+
+        <div class="mt-3 w-full h-2.5 bg-[#090d16] rounded-full overflow-hidden">
+          <div id="hud-progress" class="h-full bg-gradient-to-r from-indigo-500 via-fuchsia-400 to-cyan-400 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </header>
+
+      <!-- Main Question & Content Area -->
+      <div class="flex-1 flex flex-col justify-between gap-4">
+        <div class="card-surface rounded-3xl p-5 sm:p-7 shadow-2xl flex flex-col justify-center min-h-[160px]">
+          <!-- Reading Text Accordion (if question belongs to a reading passage) -->
+          <details id="q-reading-box" open class="hidden mb-4 rounded-2xl bg-slate-900/90 border border-cyan-400/40 overflow-hidden">
+            <summary class="cursor-pointer list-none px-4 py-3 bg-indigo-950/90 border-b border-cyan-400/30 flex items-center justify-between text-xs sm:text-sm font-black text-cyan-300 uppercase tracking-wider">
+              <span id="q-reading-title">📖 МӘТІН (READING PASSAGE)</span>
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="event.preventDefault(); event.stopPropagation(); toggleReadingTranslation()"
+                  class="px-2.5 py-1 rounded-lg bg-indigo-600/60 hover:bg-indigo-500 text-[11px] text-white font-bold transition">
+                  🇰🇿 Қазақша аудармасы
+                </button>
+                <span class="text-xs">▼</span>
+              </div>
+            </summary>
+            <div class="p-4 max-h-60 overflow-y-auto text-xs sm:text-sm leading-relaxed space-y-3">
+              <div id="q-reading-en" class="text-slate-100 whitespace-pre-line"></div>
+              <div id="q-reading-kz" class="hidden p-3 rounded-xl bg-indigo-950/60 border border-indigo-500/30 text-indigo-200 whitespace-pre-line text-xs"></div>
+            </div>
+          </details>
+
+          <div id="q-text" class="text-lg sm:text-2xl font-bold text-white text-center leading-relaxed break-words"></div>
+
+          <!-- Explanation Box -->
+          <div id="q-explain-box" class="hidden mt-4 p-3.5 rounded-2xl bg-emerald-950/60 border border-emerald-400/40 text-emerald-100 text-xs sm:text-sm leading-relaxed">
+            <span class="font-extrabold text-emerald-300">💡 Түсіндірме & Ереже: </span>
+            <span id="q-explain-text"></span>
+          </div>
+        </div>
+
+        <!-- 4 Option Tiles -->
+        <div id="options-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4"></div>
+
+        <!-- Bottom Action Bar -->
+        <div class="card-surface rounded-2xl p-3 sm:p-4 flex flex-wrap items-center justify-between gap-3">
+          <div id="quiz-feedback" class="text-xs sm:text-base font-bold text-indigo-200">
+            Жауап нұсқасын таңдаңыз (A–D немесе 1–4)
+          </div>
+          <div class="flex items-center gap-2 ml-auto">
+            <button id="btn-prev" onclick="prevQuestion()"
+              class="hidden px-4 py-2.5 rounded-xl bg-[#090d16] hover:bg-indigo-900/60 border border-indigo-500/30 text-xs sm:text-sm font-bold text-indigo-200 transition">
+              ← Алдыңғы
+            </button>
+            <button id="btn-next" onclick="nextQuestion()"
+              class="px-5 sm:px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-extrabold text-xs sm:text-base shadow-lg transition active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed">
+              Келесі →
+            </button>
+          </div>
+        </div>
+
+        <!-- Navigator Bar (Study Mode & Exam Mode) -->
+        <div id="navigator-bar" class="hidden card-surface rounded-2xl p-3">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-indigo-300">Сұрақтар навигаторы</span>
+            <button onclick="finishQuiz()" class="text-xs font-extrabold text-amber-300 hover:text-amber-200 underline">
+              Тестті аяқтау 🏁
+            </button>
+          </div>
+          <div id="nav-items" class="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto pr-1"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- RESULTS SCREEN                                                      -->
+    <!-- =================================================================== -->
+    <section id="screen-results" class="hidden flex-1 w-full max-w-4xl mx-auto px-4 py-8">
+      <div class="card-surface rounded-3xl p-6 sm:p-8 shadow-2xl text-center mb-6">
+        <div class="relative w-36 h-36 mx-auto mb-4">
+          <svg class="w-full h-full -rotate-90" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="#090d16" stroke-width="12" />
+            <circle id="res-gauge-circle" cx="60" cy="60" r="52" fill="none" stroke="url(#gaugeGradEng)" stroke-width="12"
+              stroke-linecap="round" stroke-dasharray="326.73" stroke-dashoffset="326.73"
+              style="transition: stroke-dashoffset 0.9s cubic-bezier(0.22, 1, 0.36, 1);" />
+            <defs>
+              <linearGradient id="gaugeGradEng" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#10b981" />
+                <stop offset="50%" stop-color="#06b6d4" />
+                <stop offset="100%" stop-color="#8b5cf6" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <span id="res-percent" class="text-3xl font-black text-white">0%</span>
+            <span id="res-emoji" class="text-xl mt-0.5">🏆</span>
+          </div>
+        </div>
+
+        <h2 id="res-heading" class="text-2xl sm:text-4xl font-black text-white">Тест аяқталды!</h2>
+        <p id="res-subtitle" class="text-indigo-200/80 text-sm mt-1"></p>
+        <div id="res-exam-badge" class="hidden mt-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs sm:text-sm font-black"></div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
+          <div class="bg-[#090d16] border border-indigo-500/25 rounded-2xl p-3.5">
+            <div class="text-xs text-indigo-300 font-semibold">Дұрыс / Жалпы</div>
+            <div id="res-correct" class="text-xl sm:text-2xl font-black text-emerald-400 mt-1">0 / 0</div>
+          </div>
+          <div class="bg-[#090d16] border border-indigo-500/25 rounded-2xl p-3.5">
+            <div class="text-xs text-indigo-300 font-semibold">Ұпай</div>
+            <div id="res-score" class="text-xl sm:text-2xl font-black text-fuchsia-300 mt-1">0</div>
+          </div>
+          <div class="bg-[#090d16] border border-indigo-500/25 rounded-2xl p-3.5">
+            <div class="text-xs text-indigo-300 font-semibold">Үздік серия</div>
+            <div id="res-streak" class="text-xl sm:text-2xl font-black text-amber-300 mt-1">🔥 0</div>
+          </div>
+          <div class="bg-[#090d16] border border-indigo-500/25 rounded-2xl p-3.5">
+            <div class="text-xs text-indigo-300 font-semibold">Уақыт</div>
+            <div id="res-time" class="text-xl sm:text-2xl font-black text-cyan-300 mt-1">00:00</div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-3 mt-7">
+          <button id="btn-retry-wrong" onclick="retryWrongQuestions()"
+            class="px-5 py-3 rounded-2xl bg-gradient-to-r from-rose-500 to-amber-500 hover:brightness-110 text-white font-extrabold text-sm shadow-lg transition transform hover:-translate-y-0.5">
+            🔄 Қате сұрақтарды қайта өту (<span id="res-wrong-count">0</span>)
+          </button>
+          <button onclick="restartLastQuiz()"
+            class="px-5 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-sm shadow-lg transition">
+            🔁 Қайта өту
+          </button>
+          <button onclick="goHome()"
+            class="px-5 py-3 rounded-2xl bg-[#090d16] hover:bg-indigo-900/70 border border-indigo-400/40 text-indigo-100 font-extrabold text-sm transition">
+            🏠 Басты бет
+          </button>
+        </div>
+      </div>
+
+      <!-- Detailed Expandable Review -->
+      <div class="card-surface rounded-3xl p-5 sm:p-6 shadow-2xl">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <h3 class="text-lg font-extrabold text-white">📋 Сұрақтар мен Жауаптарды Талдау</h3>
+          <div class="flex bg-[#090d16] p-1 rounded-xl border border-indigo-500/25 text-xs font-bold">
+            <button id="rev-filter-all" onclick="renderReview('all')" class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white">Барлығы</button>
+            <button id="rev-filter-wrong" onclick="renderReview('wrong')" class="px-3 py-1.5 rounded-lg text-indigo-300">Тек қателер</button>
+          </div>
+        </div>
+        <div id="review-container" class="space-y-3"></div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Exit Modal -->
+  <div id="modal-exit" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="card-surface rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center">
+      <div class="text-4xl mb-2">🚪</div>
+      <h3 class="text-xl font-extrabold text-white">Тесттен шығу</h3>
+      <p class="text-sm text-indigo-200/80 mt-2">Сессия толық аяқталмады. Басты бетке оралғыңыз келе ме?</p>
+      <div class="flex gap-3 mt-6">
+        <button onclick="closeModal('modal-exit')" class="flex-1 py-2.5 rounded-xl bg-[#090d16] hover:bg-indigo-900/60 border border-indigo-500/30 font-bold text-indigo-200">Жалғастыру</button>
+        <button onclick="confirmExit()" class="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 font-bold text-white">Шығу</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clear Mistakes Modal -->
+  <div id="modal-clear-mistakes" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="card-surface rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center">
+      <div class="text-4xl mb-2">🗑</div>
+      <h3 class="text-xl font-extrabold text-white">Қателер банкін тазалау</h3>
+      <p class="text-sm text-indigo-200/80 mt-2">Сақталған барлық қате сұрақтар тарихтан өшіріледі. Сенімдісіз бе?</p>
+      <div class="flex gap-3 mt-6">
+        <button onclick="closeModal('modal-clear-mistakes')" class="flex-1 py-2.5 rounded-xl bg-[#090d16] hover:bg-indigo-900/60 border border-indigo-500/30 font-bold text-indigo-200">Болдырмау</button>
+        <button onclick="confirmClearMistakes()" class="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 font-bold text-white">Тазалау</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================================
+       1. AUTHENTIC 12 READING TEXTS DATABASE (ENGLISH + KAZAKH + QUESTIONS)
+       ========================================================================= */
+    const READING_TEXTS = {
+      decathlon: {
+        title: 'Ten Events, One Champion: The Decathlon',
+        icon: '🏃',
+        en: `The Olympic Games have changed a lot since their origins in Ancient Greece. Today, athletes from many countries all over the world take part and the Olympics are big business, watched by millions on television. Some things, though, have stayed the same. The athletes then could make a lot of money from winning, just like today's competitors. In the ancient Games, a great champion might have received as much as a year's wages for winning a race.
+Another thing that hasn’t changed is the search for an all-round champion, somebody who can defeat their opponents at a number of different sporting events. In the ancient Olympics, athletes competed in the pentathlon (long jump, discus, javelin, running race, wrestling). The Stockholm Olympics of 1912 brought back this tradition with the modern pentathlon and the decathlon (ten events), with the heptathlon (seven events) for women introduced later.
+"Yes, I think I probably was crazy to take up the decathlon. It demands a lot of different skills. You have to train just as hard in ten different events! But it's very satisfying in the end," said American decathlete Bruce Thorpe/Jenner.
+"At the end of two days, the athlete with the most points is the champion and takes gold. All other events demand speed or strength, but with the 1500 metres long race, it's stamina. Really, decathletes aren’t built for that event, so it is the most challenging." Bruce's advice: "Start as early as you can and get a trainer / join a good club."`,
+        kz: `Декатлон — спорттағы ең танымал сайыстардың бірі. Deca — «он», athlon — «жарыс». Алғаш рет 1912 жылы Стокгольм Олимпиадасына енгізілген. Ежелгі Грекиядағы пентатлон дәстүрін жалғастырады.
+Екі күн бойы спортшылар 10 сайыс бойынша өнер көрсетеді: 100 м, ұзындыққа секіру, ядро лақтыру, биіктікке секіру, 400 м, 110 м кедергілермен, диск, найза лақтыру, сырықпен секіру және 1500 м жүгіру.
+Жеңімпаз болу үшін барлық сайыстан ең көп ұпай (score the most points) жинау қажет. Ең қиын сыны — төзімділікті (stamina) талап ететін 1500 метрге жүгіру. Брюстің жаңа бастаушыларға кеңесі: жаттықтырушы (trainer/club) табу.`,
+        qs: [
+          ['The writer says that athletes today:', ['are more popular than in ancient times', 'are much better than in ancient times', 'treat the Olympics like a business', 'can become wealthy through sport'], 2, 'Мәтінде: "Today... the Olympics are big business, watched by millions" делінген.'],
+          ['The ancient pentathlon didn’t test athletes’ abilities to:', ['throw things', 'jump high', 'run fast', 'jump far'], 1, 'Ежелгі пентатлонда биіктікке секіру (jump high) болмаған, тек ұзындыққа секіру (long jump) болған.'],
+          ['According to the passage, the heptathlon for women:', ['is much easier than the decathlon', 'is similar to the ancient pentathlon', 'tests the ability to ride a horse', 'became an Olympic event after 1912'], 3, 'Мәтін бойынша: "...heptathlon for women being introduced later (after the 1912 Stockholm Olympics)".'],
+          ['What do you have to do to win a gold medal in the decathlon?', ['Score more points than all the other competitors', 'Beat the other competitors in at least three events', 'Finish each event in the top three', 'Complete the events in the right order'], 0, 'Декатлонда әр сайыста ұпай беріледі: "the person with the most points is the winner."'],
+          ['What makes the 1500 metres such a struggle/challenging event?', ['It requires explosive speed', 'It is on the first day', 'It requires stamina and endurance unlike speed events', 'It is too short'], 2, 'Барлық басқа сайыстар жылдамдық пен күш талап етсе, 1500 метр төзімділікті (stamina) сынайды.'],
+          ['What is Bruce’s advice for people thinking of becoming decathletes?', ['Get a trainer / join a good club to guide you', 'Get up early to start training', 'Take up the heptathlon instead', 'Try to win only the 100 metres'], 0, 'Кеңесі: "Start as early as you can and get a trainer / join a good club."'],
+          ['Where were the first historical origins of these multisport games?', ['Rome', 'Ancient Greece', 'London', 'Paris'], 1, 'Олимпиадалық көпсайыстар Ежелгі Грекиядан (Ancient Greece) басталған.'],
+          ['What is the overall result of all that hard work according to Bruce Jenner?', ['It is disappointing', 'It is very satisfying in the end', 'It makes you wealthy immediately', 'It is boring'], 1, 'Брюс: "I think we are all a little crazy, but it is very satisfying in the end."']
+        ]
+      },
+      nauryz: {
+        title: 'Nauryz',
+        icon: '🌸',
+        en: `In ancient times, life was very hard for Kazakh nomads as they travelled the steppes, sleeping in yurts made of camel wool. The long winters were particularly difficult, but there were no calendars back then, so the Kazakhs waited for a sign from nature that spring had arrived. When they saw the sun shining through the hole in the top of the yurt (shanyrak), they knew winter was over. This usually happened in the month of March (Nauryz).
+These days, people celebrate Nauryz beginning on the spring equinox, 21st March, which lasts for three official public holiday days in Kazakhstan.
+People prepare for Nauryz by planting trees and flowers and cleaning their houses. A clean house is important because, according to legend, the holy man named Kydyr-Ata wanders the streets and only blesses a clean house where kind people live.
+A special dish called Nauryz-kozhe is always served. It is made with seven ingredients to represent the seven days of the week or the seven virtues of life. Seven is a significant sacred number: people invite seven guests and visit seven houses for good fortune.`,
+        kz: `Көне заманда қазақ көшпенділері көктемнің келгенін киіз үйдің шаңырағынан күн сәулесі түскен кезде білген.
+Наурыз ресми түрде 21 наурызда (күн мен түннің теңелуі) басталады және 3 күн мерекеленеді.
+Дайындық кезінде үйді тазалап, ағаш егеді. Аңыз бойынша Қыдыр ата көшелерді аралап, тек таза әрі қайырымды үйлерге батасын береді.
+Наурыз көже аптаның 7 күнін немесе 7 қасиетті білдіретін 7 түрлі дәмнен жасалады.`,
+        qs: [
+          ['How did Kazakh nomads tell that spring had begun in ancient times?', ['When they saw the sun shining through a hole in the top of the yurt', 'By checking mobile calendars', 'When the snow completely melted in May', 'When horses returned from pastures'], 0, 'Мәтінде: "When they saw the sun shining through the hole in the top of the yurt..."'],
+          ['When is the official public holiday of Nauryz celebrated in Kazakhstan?', ['1st January', '21st March', '25th October', '16th December'], 1, 'Ресми көктемгі күн мен түннің теңелуі: 21st March.'],
+          ['What do people do in preparation for Nauryz?', ['They buy electronic gadgets', 'They stay indoors and avoid guests', 'They clean their houses and plant trees and flowers', 'They paint their yurts blue'], 2, 'Дайындық: "People prepare for Nauryz by planting trees and flowers and cleaning their houses."'],
+          ['Why is a clean house important for the celebration of Nauryz?', ['To sell it to tourists', 'Because holy man Kydyr-Ata wanders and only blesses clean houses', 'To save electricity', 'Because of official city inspections'], 1, 'Қыдыр ата аңызы бойынша: "...he will only bless a house if it is clean and the people are good."'],
+          ['What special dish do people eat during Nauryz and what is its significance?', ['Beshbarmak with rice', 'Nauryz-kozhe made with seven ingredients representing seven virtues', 'Kazy made in three days', 'Baursaks made with honey'], 1, '7 түрлі дәмнен жасалатын Nauryz-kozhe (represents 7 days / 7 virtues).']
+        ]
+      },
+      women_sports: {
+        title: "Why Aren't Women's Sports as Popular as Men's?",
+        icon: '🎾',
+        en: `RickSmith 10:22: I actually prefer watching women's tennis. Men usually hit the ball so hard, especially when they serve, that their opponent can't return it, so it's less exciting to watch.
+Who knows / WayneKeys 11:27: I think we should open up men's football to women. Then we could compare person to person how well each player performs, and teams could be made up of the best players, both men and women.
+RossG 12:44: Women's sports that are identical to men's sports — football and basketball — will never be as popular, because men are faster, stronger and more athletic. On the other hand, sports that highlight the strengths of female athletes — gymnastics, tennis, ice skating — are popular. But notice none of those are team sports.
+LymmGirl 14:18: I enjoy individual events equally. Women run, swim or ski a bit slower, but it's just as exciting.
+SimonW 15:02: Most people want to watch athletes perform at the highest physical level.
+EvaCross 16:35: In men's football, players fall over all the time and act like babies. Women don't do that. Research shows women hardly ever pretend to be hurt, and when they are hurt, they get up 30 seconds faster than men!`,
+        kz: `Неге әйелдер спорты ерлердікіндей танымал емес?
+- Рик: Әйелдер теннисі қызығырақ, себебі ерлер допты тым қатты ұрып, қарсыласы қайтара алмай қалады.
+- Росс: Гимнастика, мәнерлеп сырғанау, теннис сияқты әйелдердің артықшылығын көрсететін жеке спорт түрлері танымал.
+- Ева: Ерлер футболында ойыншылар жарақат алғансып құлай береді, ал әйелдер симуляция жасамайды және жарақаттан 30 секундқа жылдам тұрады.`,
+        qs: [
+          ["Why does Rick prefer watching women's tennis over men's?", ["Men's serves are often so hard that opponents cannot return them, making it less exciting", 'Women play longer matches', "Men's tennis tickets are too expensive", 'Women use smaller rackets'], 0, 'Рик: "Men hit the ball so hard when they serve that opponents cannot return it, so it is less exciting."'],
+          ["According to RossG, which type of women's sports are genuinely popular?", ["Team sports like rugby and ice hockey", "Sports highlighting female strengths (gymnastics, tennis, figure skating)", "Weightlifting and boxing", "Only sports played in summer"], 1, 'Росс: "...sports that highlight the strengths of female athletes — gymnastics, tennis, figure skating — are popular."'],
+          ['What interesting fact does EvaCross point out about injury behavior in football?', ['Women pretend to be injured more often', 'Women get up 30 seconds faster and hardly ever pretend to be hurt', 'Men never fall down on the field', 'Referees give fewer cards in women matches'], 1, 'Ева: "...women hardly ever pretend to be hurt and get up 30 seconds faster than men."'],
+          ["What does WayneKeys propose regarding football teams?", ["Banning men from playing football", "Opening up men's football so mixed teams have the best players of both genders", "Having separate stadiums for each gender", 'Shortening the match time to 60 minutes'], 1, 'Уэйн: "...open up men\'s football to women so teams could be made up of the best players, both men and women."']
+        ]
+      },
+      laughter: {
+        title: "It's Good to Laugh! / British Humour",
+        icon: '😂',
+        en: `Humour is an important aspect of life in Britain. British people can laugh and make jokes in almost any everyday situation. A lot of people consider that a good sense of humour is more important in a partner than good looks or money.
+Why is humour so important? Laughter releases hormones (endorphins) which make you feel happier, healthier and more optimistic. Sunshine has a similar effect, so maybe the British need laughter because the weather is so bad!
+Unlike film actors and musicians, British comedians and TV comedy shows generally aren't very popular abroad. British humour seems difficult to understand if you aren't British because they often use sarcasm (e.g. saying 'Well done!' when someone drops something) and love to make fun of themselves (self-mockery). For other cultures, this can seem rude or offensive.
+However, Mr Bean has been popular in over 200 countries for over 20 years because he does simple, everyday things in an extremely bizarre, absurd and physical way without language barriers.`,
+        kz: `Британдықтар үшін юмор өте маңызды: олар серіктес таңдағанда ақша мен сыртқы келбеттен гөрі әзілқойлықты жоғары бағалайды.
+Күлген кезде ағзада бақыт пен оптимизм сыйлайтын гормондар (эндорфиндер) бөлінеді.
+Британ юморының ерекшелігі — сарказм (қателікке «Жарайсың!» деу) және өзін-өзі мазақтау (make fun of themselves).
+Mr Bean қарапайым нәрселерді оғаш әрі абсурд түрде жасайтындықтан 200-ден астам елде танымал.`,
+        qs: [
+          ['Why do British people value a good sense of humour in a partner?', ['It helps them become wealthy', 'It is considered more important than good looks or money', 'It guarantees high social status', 'It is required by British law'], 1, 'Мәтінде: "...a good sense of humour is more important in a partner than good looks or money."'],
+          ['What physiological benefit does laughter provide according to the passage?', ['It increases blood pressure permanently', 'It releases hormones that make you feel happier, healthier and optimistic', 'It completely prevents the need to sleep', 'It replaces all physical exercise'], 1, 'Күлкі гормондар бөліп, адамды бақыттырақ әрі сауырақ етеді.'],
+          ['Why is British comedy sometimes difficult for foreigners to understand?', ['It uses only classical Latin expressions', 'It frequently involves sarcasm and self-mockery which can seem rude', 'It contains no facial expressions', 'It is only broadcast on British radio'], 1, 'Британдықтар сарказм мен өзін әжуалауды (sarcasm and make fun of themselves) жиі қолданады.'],
+          ['Why has Mr. Bean achieved universal worldwide popularity in over 200 countries?', ['He speaks five different languages fluently', 'He performs simple everyday actions in a bizarre, absurd physical way', 'He discusses complex international politics', 'He acts exclusively in dramatic tragedies'], 1, 'Мистер Бин қарапайым әрекеттерді оғаш, абсурд (bizarre, absurd way) түрде көрсетеді.']
+        ]
+      },
+      italian_food: {
+        title: 'The Globalization of Italian Food',
+        icon: '🍕',
+        en: `Fabio Parasecoli in his study "The Globalization of Italian Food" credits the worldwide spread of Italian cuisine to Italian immigrants. When Italian immigrants relocated abroad, they wanted to keep their culinary traditions, ingredients, and culture alive.
+Their demand for staples like tomatoes and pasta led to an uptick in Italian manufacturing and canning. Soon, Italian eateries spread from immigrant communities into mainstream cities all over America, Europe, and the world (like gelaterias in Germany and coffee bars in London).
+However, mass commercialization led to a backlash in Italy: the "Slow Foods" movement. This movement is dedicated to preserving traditional methods of preparing meals from natural, ground-grown ingredients rather than factory-processed food. It is ironic that this anti-globalization movement itself has now become globalized.`,
+        kz: `Итальян тағамдарының әлемге таралуының басты себебі — шетелге қоныс аударған итальяндық иммигранттар. Олар өз дәстүрін сақтау үшін қызанақ, макарон өнімдеріне сұраныс туғызып, өндірісті дамытты.
+Жаппай өндіріс пен фабрикалық тағамдарға қарсы Италияда дәстүрлі қолдан дайындалатын «Slow Foods» қозғалысы пайда болды.`,
+        qs: [
+          ['Who does Fabio Parasecoli credit for the global spread of Italian cuisine?', ['International fast-food corporations', 'Italian immigrants who preserved their food traditions abroad', 'Government tourism ambassadors', 'American supermarket managers'], 1, 'Мәтінде: "He pegs Italian immigrants as the catalyst that led to globalization."'],
+          ['What was the main purpose of the "Slow Foods" movement founded in Italy?', ['To mass-produce canned pasta sauces', 'To preserve traditional preparation methods using fresh ground-grown food', 'To ban all foreign restaurants from Italy', 'To speed up meal preparation in restaurants'], 1, 'Slow Foods зауыттық емес, дәстүрлі жерден шыққан тағамдарды сақтауға бағытталған.'],
+          ['Why do many modern families in Italy use ready-made pasta sauces today?', ['Because homemade sauces are illegal', 'Because it is more convenient and saves time in busy modern life', 'Because tomatoes no longer grow in Italy', 'Because supermarkets give them away for free'], 1, 'Себебі ол ыңғайлы және уақытты үнемдейді (convenient and saves time).'],
+          ['What ironic fact does the author mention about the Slow Foods movement?', ['It was banned worldwide', 'A movement created to fight globalization has itself become globalized', 'Nobody in Italy likes traditional food anymore', 'It only exists in the United States'], 1, 'Ирония: жаһандануға қарсы басталған қозғалыстың өзі бүкіл әлемге жаһанданып кетті.']
+        ]
+      },
+      hobbies: {
+        title: 'Hobbies: Past and Present',
+        icon: '🎨',
+        en: `During the twentieth century, people gained more leisure time. Many took up hobbies. Comparing past and present hobbies reveals big shifts.
+Stamp collecting was once a favourite hobby of millions of children and adults. Today, technology and emails have reduced the need for postage stamps, causing traditional stamp collecting to decline among youth.
+Model building has also transformed: while earlier generations built models from simple wood or plastic, modern kits feature computerized and electronic parts, resembling miniature robots.
+Computers and the Internet have revolutionized free time. Teenagers play online games, code websites, and access communities. However, timeless outdoor hobbies like fishing, sports, and gymnastics remain as popular as ever.`,
+        kz: `XX ғасырда бос уақыттың көбеюімен хоббилер дамыды.
+Марка жинау (stamp collecting) электронды поштаның (email) кесірінен жастар арасында азайды.
+Модель құрастыру бұрын ағаш пен пластмассадан жасалса, қазір электронды бөлшектермен роботқа айналды.
+Дегенмен балық аулау, гимнастика сияқты дәстүрлі хоббилер әлі де танымал.`,
+        qs: [
+          ['Why has stamp collecting declined as a popular hobby among young people today?', ['Stamps were declared illegal', 'Emails and digital messaging have largely replaced physical postage stamps', 'Post offices refuse to sell stamps to minors', 'Albums have become impossible to find'], 1, 'Emails replace letters, so young people do not buy stamps like they used to.'],
+          ['How has technology altered the nature of model building?', ['Models are now made strictly out of stone', 'Modern models incorporate electronic and computerized components', 'Nobody builds models anymore', 'Models can only be built outdoors'], 1, 'Modern models have computerized and electronic parts, making them like robots.'],
+          ['Which traditional hobby is mentioned as remaining as popular as ever?', ['Watching black-and-white silent movies', 'Fishing and sports', 'Writing letters by hand', 'Listening to phonograph cylinders'], 1, 'Мәтінде: "Fishing is as popular as it ever was."']
+        ]
+      },
+      maadai_kara: {
+        title: 'Maadai-Kara & Altai Epic Tale',
+        icon: '🌳',
+        en: `Kai is a unique throat-singing tradition used in the Altai Mountains to recite ancient epic tales. Aleksei Grigorevich Kalkin (1925–1998) was one of the greatest masters who preserved Maadai-Kara, an epic poem of 7,738 verses.
+The tale begins with the sacred Bayterek tree (the World Tree) uniting the upper, middle (human), and lower worlds. Maadai-Kara ruled the middle world peacefully until he aged and slept for 60 days. When enemies approached, to protect his infant son Kögüdei Mergen, he left him on the Black Mountain, where a poor Altai woman raised him.
+The villain Kara-Kula conquered the land and enslaved the people. Grown-up Kögüdei Mergen embarked on an epic quest: he crossed a poisonous sea, passed moving mountains, defeated Kara-Kula, freed his people, and even descended into the underworld to overcome Erlik, releasing all righteous souls. Finally, Kögüdei Mergen and his wife Altyn Küskü became celestial stars watching over humanity.`,
+        kz: `Қай — Алтай тауларында батырлар жырын жырлауға арналған көмеймен ән айту өнері. А.Г. Калкин 7738 шумақтан тұратын «Маадай-Қара» дастанын жеткізген.
+Бәйтерек — үш әлемді байланыстырған Әлем ағашы. Орта әлемнің билеушісі Маадай-Қара баласы Көгүдей Мергенді аман сақтау үшін Қара тауға апарып, оны кедей әйел асырап алады.
+Көгүдей Мерген ержетіп, қатыгез Қара-Құла мен жерасты әміршісі Ерлікті жеңіп, халқын құлдықтан босатады да, соңында жұлдыздарға айналады.`,
+        qs: [
+          ['What is "Kai" in Altai cultural tradition?', ['A wooden string instrument', 'A special epic throat-singing style used to recite heroic legends', 'A ritual horse race', 'A traditional winter dance'], 1, 'Қай — эпикалық дастандарды жырлауға арналған көмеймен ән айту түрі.'],
+          ['What was the sacred Bayterek tree called in the epic?', ['The Golden Oak', 'The World Tree uniting upper, middle, and lower realms', 'The Healing Tree', 'The Star Willow'], 1, 'Бәйтерек — үш әлемді жалғаған «Әлем ағашы» (The World Tree).'],
+          ['Why did Maadai-Kara take his infant son to the Black Mountain?', ['To punish him for disobedience', 'To hide and keep him safe from invading enemies', 'To sell him to a merchant', 'To enroll him in a warrior academy'], 1, 'Баласын қауіп төндірген жаулардан аман сақтау (keep him safe) үшін Қара тауға апарды.'],
+          ['Who ruled the dark underworld in the legend?', ['Kara-Kula', 'Erlik', 'Kögüdei Mergen', 'Lampis'], 1, 'Жерасты әлемінің әміршісі — Ерлік (Erlik, lord of the underworld).'],
+          ['What happened to Kögüdei Mergen and his wife Altyn Küskü at the end of their lives?', ['They became ruling emperors forever', 'They turned into stars watching over the world', 'They disappeared into the ocean', 'They returned to the underworld'], 1, 'Дастан соңында олар әлемді күзеткен жұлдыздарға (became stars) айналды.']
+        ]
+      },
+      driving_ambition: {
+        title: 'Driving Ambition (Karen Lowe)',
+        icon: '🏎️',
+        en: `Karen Lowe is determined to become the fastest woman on four wheels. Her passion began as a child watching her father race rally cars. She started karting at age nine, progressed to rally cars, and is now stepping up to Formula 3.
+Motor racing is massive in the United Kingdom, boasting over 750 clubs and 100,000 active competitors.
+Karen notes that although many women compete at grassroots levels, few reach Formula 1 due to past lack of commercial support and sponsors. However, attitudes are improving: "There will definitely be a female world champion one day."
+Racing requires immense skill and vast financial backing. Despite sponsorship challenges, Karen's father acts as her manager, and her family remains her strongest supporters.`,
+        kz: `Карен Лоу — автожарыс бойынша үздік әйел пилот болуды мақсат еткен спортшы. Әкесінен шабыттанып, 9 жасында картингтен бастаған, қазір Формула-3-ке өтуде.
+Ұлыбританияда автоспорт өте кең таралған (750 клуб, 100 мың қатысушы).
+Формула-1-де әйелдердің аз болу себебі — демеушілік пен қаржылық қолдаудың аздығы. Бірақ ол бір күні әйел чемпион шығатынына сенеді.`,
+        qs: [
+          ['How popular is motor racing in the UK according to Karen?', ['It is minor and strictly amateur', 'It is massive, with over 750 clubs and 100,000 competitors', 'It was banned in the 1990s', 'It is only popular among retired professionals'], 1, 'Мәтінде: "It\'s massive! Over 750 clubs and 100,000 competitors."'],
+          ['Why are there relatively few women competing in Formula 1?', ['Women are legally prohibited by racing regulations', 'In the past, women lacked sponsors, media, and industry support', 'Cars cannot be adjusted for women', 'Women fail basic driving licence exams'], 1, 'Басты себеп — қаржылық және демеушілік қолдаудың (sponsors/support) жетіспеуі.'],
+          ['What is required to become a champion in motorsport besides great driving skill?', ['No physical fitness whatsoever', 'Extensive financial resources and sponsor backing', 'Owning a car factory', 'Living exclusively in London'], 1, 'Керемет жүргізу шеберлігінен бөлек өте көп қаражат (a lot of money/sponsors) қажет.']
+        ]
+      },
+      bakhargul: {
+        title: 'Turning Your Hobby into a Business (Ademi-Ai)',
+        icon: '💎',
+        en: `Bakhargul Tolegenkyzy successfully turned her lifelong passion for collecting Kazakh antiques into a thriving enterprise. Author Lucy Thomas discovered her museum in Almaty while on holiday.
+As a young girl, Bakhargul collected traditional gold and silver heirlooms. In her twenties, a travelling exhibition across Kazakhstan was so successful that she established a permanent museum in Almaty with over 1,000 historic exhibits (rugs, jewellery, weapons).
+Entrance to the museum is completely free because Bakhargul wants to share cultural heritage with locals and tourists.
+To allow visitors to take a piece of Kazakh culture home, she founded "Ademi-Ai", an acclaimed company producing high-quality cultural souvenirs and official memorabilia for the Asian Winter Games. Her success rests on hard work, patience, and family support.`,
+        kz: `Бахаргүл Төлегенқызы көне қазақ бұйымдарын жинау хоббиін үлкен бизнеске айналдырған. Оның Алматыда 1000-нан астам жәдігері бар тегін мұражайы бар.
+Ол қазақ мәдениетін насихаттау үшін «Әдемі-Ай» компаниясын құрып, ұлттық нақыштағы кәдесыйлар өндірді. Оның жетістік құпиясы — еңбекқорлық, шыдамдылық және отбасы қолдауы.`,
+        qs: [
+          ['How did author Lucy Thomas first encounter Bakhargul?', ['Through an internet advertisement', 'While visiting her museum during a holiday in Almaty', 'At an international banking symposium', 'Through a television documentary'], 1, 'Люси Алматыда демалыста жүргенде оның мұражайын көріп, танысқан.'],
+          ['Why is entrance to Bakhargul’s museum in Almaty free of charge?', ['It is funded completely by foreign tourists', 'She wants to generously share the beauty of Kazakh heritage with everyone', 'The exhibits are made of plastic replicas', 'The city council forces her to keep it free'], 1, 'Бахаргүл қазақ тарихының сұлулығын барлығымен бөлісу үшін мұражайды тегін жасаған.'],
+          ['What sets the company "Ademi-Ai" apart in Kazakhstan?', ['It imports cheap factory trinkets from overseas', 'It produces authentic, high-quality souvenirs based on Kazakh culture and landmarks', 'It only sells antique weapons', 'It operates solely online without designers'], 1, '«Әдемі-Ай» қазақ мәдениетіне негізделген сапалы кәдесыйлар шығарады.']
+        ]
+      },
+      stress: {
+        title: 'Who Says STRESS is Bad for You?',
+        icon: '🧠',
+        en: `We are constantly told that stress is our number one enemy. However, physiologist Monika Fleshner points out that only chronic, relentless stress causes damage.
+Mild, short-term stress is actually beneficial. When stressed, adrenaline and cortisol increase heart rate and boost blood flow to muscles and the brain, preparing us for focused action—an evolutionary survival mechanism.
+Regular short bouts of stress act like a workout for the brain, enhancing immune function and lowering the risk of neurodegenerative diseases such as Alzheimer's.
+Psychologists distinguish distress (harmful, disheartening stress) from eustress (positive, motivating stress, like pushing yourself during rewarding gym workouts). The multi-million stress-management industry often pathologizes normal physiological responses.`,
+        kz: `Стресс әрқашан жаман емес. Физиолог Моника Флешнер созылмалы күйзеліс қана зиян екенін, ал қысқа мерзімді жеңіл стресс адам ағзасын жаттықтыратынын айтады.
+Адреналин мен кортизол жүректі жиі соқтырып, миға қан жүгіртеді, иммунитетті күшейтеді.
+Стрестің екі түрі бар: дистресс (жағымсыз) және эустресс (жағымды, пайдалы күйзеліс).`,
+        qs: [
+          ['According to physiologist Monika Fleshner, when does stress become harmful?', ['Every single morning', 'Only under circumstances of chronic, unrelenting stress', 'Whenever we do physical exercise', 'When we sleep more than eight hours'], 1, 'Зияндысы — созылмалы (chronic stress) стресс қана.'],
+          ['How can mild, short-term stress benefit the brain and body?', ['It permanently shuts down hormonal production', 'It acts like a workout, strengthening immunity and lowering Alzheimer\'s risk', 'It completely stops heart rate', 'It causes temporary paralysis'], 1, 'Жеңіл стресс миды жаттықтырып, иммунитетті күшейтеді.'],
+          ['What is "eustress" as defined by psychologists?', ['Severe chronic depression', 'Positive, healthy stress that leads to satisfaction and accomplishment', 'A medication sold in pharmacies', 'Anxiety about financial debt'], 1, 'Эустресс — адамға күш пен бақыт сыйлайтын жағымды стресс (positive stress).']
+        ]
+      },
+      inventions: {
+        title: 'Inventions the World Forgot',
+        icon: '💡',
+        en: `1. The Telharmonium: Invented by Thaddeus Cahill in 1897, this 200-ton apparatus was the world's first electronic musical instrument. Music was broadcast live into homes via telephone wires before radio existed, but it caused telephone interference and disappeared by 1914.
+2. The Rejuvenator: Created in 1925 by British scientist Otto Overbeck, it passed mild electrical currents through body electrodes to treat deafness and baldness. Hundreds were sold worldwide, making Overbeck wealthy, before fading into museum displays.
+3. The Writing Ball: Invented in 1865 by Denmark's Rasmus Malling-Hansen, this rapid typewriter had optimally placed keys and electrical assist. Though faster than later keyboards, users could not see the paper while typing. Factory-produced QWERTY typewriters soon replaced it.
+4. The Antikythera Mechanism: Discovered in a 2 BC shipwreck off Greece in 1901, X-rays in the 1970s revealed it to be an ancient mechanical computer predicting celestial movements using over 30 precision bronze gear wheels. Professor Edmunds called it "more valuable than the Mona Lisa."`,
+        kz: `Әлем ұмытқан 4 өнертабыс:
+1. Телгармониум (1897) — телефон сымы арқылы үйлерге тікелей музыка таратқан салмағы 200 тонналық алғашқы электронды аспап.
+2. Жасартқыш (1925) — әлсіз токпен таздық пен саңыраулықты емдеуге арналған Овербектің танымал құрылғысы.
+3. Жазу шары (1865) — Маллинг-Хансеннің өте жылдам теретін, бірақ қағазы көрінбейтін алғашқы машинкасы.
+4. Антикитера механизмі (б.з.д. II ғ.) — 1901 жылы табылған, планеталар қозғалысын есептейтін ежелгі 30 тісті дөңгелекті компьютер.`,
+        qs: [
+          ['How was music from the Telharmonium broadcast to households before radio was invented?', ['Via postal letters', 'Through telephone lines', 'Through underwater sound tubes', 'Using wireless radar'], 1, 'Музыка телефон желісі (telephone lines) арқылы үйлерге таралған.'],
+          ['What was the main flaw of the Danish Writing Ball despite its typing speed?', ['It required twelve operators', 'Typists could not see the paper while typing', 'It burned the paper with acid', 'It could only print Latin numbers'], 1, 'Кемшілігі: жазушы теріп жатқанда қағазды көре алмаған.'],
+          ['What did modern X-rays reveal about the ancient Antikythera Mechanism?', ['It was an ancient navigational anchor', 'It was a bronze mechanical computer predicting astronomical movements', 'It was an ancient musical bell', 'It was a coin minting press'], 1, 'Ол аспан денелерінің қозғалысын болжайтын ежелгі қола компьютер (ancient computer) болып шықты.']
+        ]
+      },
+      amazing_race: {
+        title: 'The Amazing Race & Sports Injuries',
+        icon: '🏆',
+        en: `In the reality show "The Amazing Race," 11 pairs race around the globe completing grueling tasks: shaving heads, eating unusual foods, bungee jumping. What keeps viewers hooked is that contestants are real-life couples, best friends, or relatives; their stressful arguments and teamwork are authentic.
+Medical studies on sports performance and safety emphasize prevention and proper footwear. Soccer players' ankles are vulnerable to impacts; 18% of young players suffer heel injuries. A condition called "footballer's foot" arises from excessively flexible footwear causing bone deformities. If left unaddressed, early cartilage damage can lead to premature osteoarthritis, a painful joint degenerative condition that impairs mobility.`,
+        kz: `«The Amazing Race» шоуында нағыз достар мен жұптар сайысады, олардың қиындықтағы қарым-қатынасы шынайы.
+Спорттық медицина жарақаттың алдын алуда дұрыс аяқ-киімнің маңызын айтады. Футболшылардың тобығына соққы тиіп, остеоартрит (буындардың зақымдануы) қаупі туады.`,
+        qs: [
+          ['Why is "The Amazing Race" considered more authentic than many reality shows?', ['Participants know each other in real life (couples, friends, family) and face real stress', 'Contestants are paid actors', 'There are no rules or eliminations', 'It is filmed inside a single television studio'], 0, 'Қатысушылар шынайы өмірде жақын адамдар болғандықтан, реакциялары шынайы.'],
+          ['What is osteoarthritis as defined in sports medicine?', ['A mental fatigue syndrome', 'A degenerative condition affecting joint cartilage making movement painful and difficult', 'A mild muscle cramp in the thigh', 'An allergy to sports turf'], 1, 'Остеоартрит — буын шеміршектерінің зақымдалып, қозғалысты қиындататын ауруы.'],
+          ['What footwear problem causes "footballer\'s foot" deformity?', ['Shoes with metal spikes', 'Shoes and ankle parts that are excessively flexible', 'Wearing shoes two sizes larger', 'Shoes made exclusively of wool'], 1, 'Тым иілгіш (too flexible) аяқ киімдер мен тобық бекіткіштер себеп болады.']
+        ]
+      }
+    };
+
+    /* =========================================================================
+       2. COMPREHENSIVE 2026 SLIVS (GRAMMAR, IDIOMS, PHRASALS, SYNTAX)
+       Format: [question, [optA, optB, optC, optD], correctIdx, explanation]
+       ========================================================================= */
+    const SLIV_QUESTIONS = [
+      // Section 1: Grammar & Tenses (SLIV 02, SLIV 04, 24.02.2026)
+      ['She said: “I am going shopping with my best friend today.” In indirect speech:', ['She said that she were going shopping with my best friend today.', 'She said that I was going shopping with my best friend that day.', 'She said that she was going shopping with my best friend today.', 'She said that she was going shopping with her best friend that day.'], 3, 'Төл сөз: am going -> was going, my -> her, today -> that day болып өзгереді.'],
+      ['These muscles …… to pump blood ______ our body.', ['over', 'around', 'across', 'between'], 1, 'Қанды дене бойына тарату: pump blood around our body.'],
+      ['Identify the adverb that has the exact same form as an adjective:', ['slow', 'heavy', 'hard', 'good'], 2, 'Hard — әрі сын есім (hard work), әрі үстеу (work hard). Slow/slowly, good/well.'],
+      ['The meaning of the idiom: “Not be worth the price” is:', ['to make ends meet', 'dirt cheap', 'to be rolling in', 'to be a rip-off'], 3, '«To be a rip-off» — бағасына татымайтын, тым қымбат / алдау.'],
+      ['When Hurricane Katrina hit the coast, water rose, people ______ for help, neighborhoods ______ from looting.', ['has begged, has suffered', 'are begging, are suffering', 'were begging, were suffering', 'were begged, were suffered'], 2, 'Өткен шақтағы қатар жүріп жатқан оқиғалар (Past Continuous): were begging, were suffering.'],
+      ['He ______ so he was late for work.', ['oversleeps', 'overslept', 'was oversleeping', 'has overslept'], 1, 'Себеп-салдар өткен шақта: he overslept (ұйықтап қалды), so he was late.'],
+      ['They had finished work ______ noon yesterday.', ['at', 'by', 'on', 'in'], 1, 'Past Perfect-пен белгілі бір уақытқа дейін аяқталғанын білдіретін предлог: «by noon» (түске дейін).'],
+      ['Sauran was a place where travelers could stop and ______ supplies of food and water.', ['use up', 'exhaust', 'replenish', 'run out of'], 2, '«Replenish» — қорды қайта толықтыру, жаңарту.'],
+      ['Choose the correct noun formed from the adjective “mad”:', ['madition', 'madness', 'madful', 'madity'], 1, 'Сын есімнен -ness жұрнағы арқылы зат есім жасалады: madness (есуастық, жындылық).'],
+      ['The course at university was difficult. ______, I am proud that I did it.', ['While', 'Despite', 'Although', 'Yet'], 3, 'Сөйлем басында қарама-қайшылықты білдіреді: «Yet, I am proud» (Дегенмен, мен мақтанамын).'],
+      ['Robots are very useful in the classroom. ______ it is very expensive.', ['Although', 'So', 'Despite', 'Also'], 0, '«Although» (дегенмен, солай бола тұра) қарама-қайшылықты жалғайды.'],
+      ['Correct it yourself. The mistake isn’t ______.', ['my', 'myself', 'mine', 'their'], 2, 'Сөйлем соңында тәуелді есімдіктің абсолют формасы: mine (менікі).'],
+      ['You can have ______ you want to eat. It doesn’t cost anything.', ['thing', 'anything', 'something', 'nothing'], 1, 'Кез келген нәрсені ала аласыз: anything you want.'],
+      ['She ______ her speech brilliantly.', ['made off', 'carried off', 'took off', 'put off'], 1, '«Carry off» — қиын істі сәтті аяқтау, керемет алып шығу.'],
+      ['I could not ______ the bus route numbers in the dark.', ['make for', 'make out', 'make up', 'make up for'], 1, '«Make out» — анық көру, ажырату, түсіну.'],
+      ['The antonym of “pushy” is:', ['aggressive', 'bold', 'meek / unassertive', 'brash'], 2, 'Pushy (мазасыз, өршеленген) сөзіне қарама-қарсы: meek (жуас), unassertive, diffident.'],
+      ['Circle the odd one out in the topic "Temperature":', ['sunny spells', 'boiling hot', 'chilly', 'freezing cold'], 0, 'Sunny spells — бұлт арасынан күн шығуы (ауа райы құбылысы), ал қалғандары температура.'],
+      ['The plural form of the noun “larva” is:', ['larvas', 'larvae', 'larves', 'larvi'], 1, 'Латын тілінен енген сөз: larva -> larvae (дернәсілдер).'],
+      ['"These games take up ______ space." Which quantifier is NOT possible?', ['a large amount of', 'a great deal of', 'a lot of', 'several'], 3, 'Space/game санаусыз мәнде қолданылғанда "several" (бірнеше) сан есімі қойылмайды.'],
+      ['"In the 1980s, there were ______ 3D games." Which phrase is NOT grammatically possible?', ['no any', 'hardly any', 'a small number of', 'few'], 0, '"No any" ағылшын тілінде қате құрылым. Дұрысы: "no" немесе "hardly any".'],
+      ['The phrasal verb “to take after” means:', ['to follow someone quickly', 'to resemble an older family member', 'to fall behind', 'to care for an animal'], 1, '«Take after» — әкесіне не шешесіне тарту, ұқсау (resemble an older relative).'],
+      ['Choose the correct adjective order (OSASCOMP):', ['Scottish young tall men', 'young Scottish tall men', 'tall young Scottish men', 'men tall young Scottish'], 2, 'Сын есім реті: Size (tall) -> Age (young) -> Origin (Scottish) -> Noun (men).'],
+      ['Choose the correct adjective order for the box:', ['small square metal jewelry box', 'jewelry metal small square box', 'metal square small jewelry box', 'small metal square jewelry box'], 0, 'Size (small) -> Shape (square) -> Material (metal) -> Purpose (jewelry) -> box.'],
+      ['The synonym of “pushy” is:', ['timid and quiet', 'aggressive, ambitious, bold', 'patient and yielding', 'polite and reserved'], 1, 'Pushy — тым напористый, өршеленген, aggressive, domineering.'],
+      ['We ______ the hotel if we hadn’t seen the signpost.', ['would have found', 'had found', 'would find', 'will find'], 0, '3rd Conditional (өткендегі мүмкін еместік): If + Past Perfect, would have + V3.'],
+      ['Choose an abstract noun that cannot be sensed physically:', ['machinery', 'cotton', 'courage', 'boy'], 2, 'Courage (батылдық) — сезім мүшелерімен ұстауға келмейтін абстракт зат есім.'],
+      ['Define the function of the infinitive: "I was the first to come."', ['Subject', 'Attribute', 'Adverbial modifier', 'Predicate'], 1, '«the first» сөзін сипаттап, қандай деген сұраққа жауап беріп анықтауыш (Attribute) болып тұр.'],
+      ['Which group contains ONLY uncountable nouns?', ['luggage, furniture, information', 'two oranges, coffee, tea', 'potato, advice, carrot', 'coin, notebook, currency'], 0, 'Luggage, furniture, information — ағылшын тілінде әрдайым санаусыз (uncountable).'],
+      ['Choose the correct preposition: "I was glad to hear ______ my penfriend after months."', ['at', 'on', 'from', 'to'], 2, '«Hear from someone» — біреуден хат-хабар алу. («Hear of» — біреу жайлы есту).'],
+      ['Select the correct Complex Subject construction:', ['He is known to being a good teacher.', 'He is known to be a good teacher.', 'He known be a good teacher.', 'He is known be a good teacher.'], 1, 'Complex Subject: Subject + Passive verb + to-Infinitive (He is known to be...).'],
+      ['Choose the sentence with a Gerund:', ['He stopped to read newspapers.', 'He stopped reading newspapers.', 'He has read the newspaper.', 'Reading is easy, he can read.'], 1, '"Stop reading" — оқуды мүлдем доғарды (Gerund). "Stop to read" — оқу үшін тоқтады (Infinitive).'],
+      ['Esil is ______ longest river in ______ Central Asia.', ['-, the', 'the, -', 'the, the', 'a, the'], 1, 'Өзендерге "the" қойылады (the Esil), ал құрлық пен аймаққа артикль қойылмайды (Central Asia).'],
+      ['Sheila is very fond ______ telling other people what to do.', ['on', 'at', 'of', 'in'], 2, 'Тұрақты тіркес: «to be fond of» (жақсы көру, құмар болу).'],
+      ['The word “bossy” means:', ['unassuming', 'controlling and domineering', 'yielding', 'submissive'], 1, 'Bossy — адамдарға үнемі бұйрық беріп, билегісі келетін (controlling/domineering).'],
+
+      // Section 2: SLIV 05 & 06 & Core Grammar
+      ['Dr. Hammond gave me ______ good advice.', ['a', 'an', 'the', '- (no article)'], 3, 'Advice — санаусыз зат есім, сондықтан "a/an" қойылмайды!'],
+      ['Complete the famous English proverb: "Knowledge is ______."', ['Luck', 'Work', 'Money', 'Power'], 3, '«Knowledge is power» — Білім — күш.'],
+      ['Fill in a suitable modal verb: "She ______ have been ill, otherwise she would have come."', ['must', 'should to', 'can', 'could to'], 0, 'Must have + V3 — өткен шақтағы 100% сенімді болжам (ол ауырып қалған болуы керек).'],
+      ['They are very similar. I often mistake one ______ the other.', ['of', 'with', 'by', 'for'], 3, 'Тұрақты тіркес: «mistake someone for someone else» (біреуді біреумен шатастыру).'],
+      ['Choose the correct answer: "What time ______ on television?"', ['are the news', 'is news', 'is the news', 'are news'], 2, 'News сөзі ағылшын тілінде әрдайым жекеше түрде (singular uncountable): "is the news".'],
+      ['Choose the correct sentence:', ['Sue is lawyer like her father.', 'Sue is a lawyer likes her father.', 'Sue is a lawyer like her father.', 'Sue is a lawyer as if her father.'], 2, 'Мамандыққа "a/an" қажет және салыстыру үшін "like" қолданылады.'],
+      ['Robert didn’t study for the test; ______, he did very well.', ['consequently', 'nevertheless', 'moreover', 'unless'], 1, 'Nevertheless (соған қарамастан) — қарама-қайшылықты көрсетеді.'],
+      ['Define the underlined word: "My elder sister enjoys travelling."', ['Participle I', 'Gerund', 'Infinitive', 'Adverb'], 1, 'Enjoy етістігінен кейін герундий (Gerund) келеді.'],
+      ['"Do you think we’ll get there before dark?" — "Yes, ______."', ['I am think so', 'I don’t think so', 'I think so', 'I think not so'], 2, 'Стандартты растау жауабы: "I think so" (Меніңше, иә).'],
+      ['Choose the correct preposition: "Mary and David go out for dinner ______ their wedding anniversary."', ['in', 'at', 'on', 'by'], 2, 'Мерейтойлар мен белгілі бір күндерге "on" қойылады: "on their anniversary", "on 14 February".'],
+      ['The Present Perfect Tense describes:', ['permanent facts in nature', 'an action in progress right now', 'past events with a connection to the present', 'definite past historical dates'], 2, 'Present Perfect — нәтижесі осы шақпен байланысты өткен іс-әрекет.'],
+      ['The ______ resources are quite enough to meet the ______ material needs.', ['Earths\', peoples\'', 'Earth\'s, people\'s', 'Earths, peoples', 'Earth\'s, peoples'], 1, 'Жекеше тәуелдік: Earth\'s, бұрыс көпше зат есім тәуелдігі: people\'s.'],
+      ['The correct preposition: "I prefer to travel ______ air."', ['on', 'by', 'at', 'from'], 1, 'Көлік құралдарымен: by air, by train, by car, by bus.'],
+      ['Complete the sentence: "The woman ______ works for a TV company."', ['living next door', 'lived to next door', 'who is lives', 'live next door'], 0, 'Participle I орамы: "The woman living next door" = "The woman who lives next door".'],
+      ['Carry ______ working until I tell you to stop!', ['on', 'off', 'up', 'around'], 0, '«Carry on» — жалғастыру (continue).'],
+      ['Choose the correct comparative form: "Prevention is ______ than cure."', ['better', 'good', 'best', 'more good'], 0, 'Good сөзінің салыстырмалы шырайы — better (Аурудың алдын алу емдеуден жақсырақ).'],
+      ['Don’t laugh ______ my work. I am doing my best.', ['with', 'of', 'at', 'for'], 2, 'Тұрақты тіркес: «laugh at someone/something» (біреуге күлу, мазақтау).'],
+      ['Tim was too ______ to ask Alice for a dance.', ['worried', 'shy', 'polite', 'selfish'], 1, 'Shy — ұялшақ (тым ұялшақ болғандықтан биге шақыра алмады).'],
+      ['Assel has lost her wallet. I think she ______ it in the shop.', ['must have left', 'may leave', 'had left', 'should have left'], 0, 'Өткен шақтағы сенімді қорытынды: must have left (дүкенде қалдырған болуы керек).'],
+      ['Choose noun suffixes from the list:', ['-ous, -able', '-ate, -ify', '-ism, -ance, -ness', '-ful, -less'], 2, '-ism, -ance/-ence, -ness тек зат есім жасайтын жұрнақтар.'],
+      ['My grandparents had got a good ______ of pears this autumn.', ['harvest', 'study', 'picture', 'weather'], 0, 'Harvest — өнім, астық (жақсы алмұрт өнімін алды).'],
+      ['Define the function of the Gerund: "Swimming is healthy for you."', ['Subject', 'Object', 'Predicate', 'Attribute'], 0, 'Сөйлемнің басында тұрып, бастауыш (Subject) қызметін атқарып тұр.'],
+      ['A fossil means:', ['A plant that does not grow nowadays', 'An animal or plant from the past preserved in rock', 'An anxiety phobia', 'A modern synthetic fuel'], 1, 'Fossil — таста сақталып қалған ежелгі жануар не өсімдік қалдығы (қазба).'],
+      ['Give the synonym to the word “to skip”:', ['to roar', 'to jump', 'to scan', 'to run'], 1, 'Skip — секіру, аттап өту (jump).'],
+      ['Our teacher wishes he ______ another profession when he was young.', ['chose', 'has chosen', 'had chosen', 'would choose'], 2, 'Wish + Past Perfect өткен шақтағы өкінішті білдіреді (had chosen).'],
+      ['Which time expression is typical for the Present Continuous tense?', ['seldom', 'since', 'this week / right now', 'permanent'], 2, 'Уақытша не осы кездегі іс-әрекет: this week, right now, at the moment.'],
+      ['Can we stop running now? I don’t have ______ energy left at all.', ['any', 'some', 'no', 'an'], 0, 'Болымсыз сөйлемде (don\'t have) "any" қолданылады.'],
+      ['Choose the compound noun:', ['wide-eyed', 'cupboard', 'eco-friendly', 'waterproof'], 1, 'Cupboard — екі сөзден біріккен күрделі зат есім (compound noun).'],
+      ['Find the word with the suffix meaning an acting person:', ['Written', 'Writing', 'Writer', 'Writness'], 2, '-er/-or жұрнағы іс-әрекет иесін білдіреді: writer (жазушы).'],
+      ['Choose the correct sentence with possessive case:', ['Have you met Toms\' friend?', 'Do they sell the women’s clothes?', 'Their husbands\' names is David.', 'I heard the mans\' voice.'], 1, 'Women көпше түріне apostrophe + s жалғанады: women\'s clothes.'],
+      ['Complete with the correct article: "______ love is a perfectly natural human feeling."', ['A', 'An', 'The', '- (no article)'], 3, 'Жалпы мағынадағы абстракт зат есімдерге артикль қойылмайды.'],
+      ['Which modal verb expresses general advice?', ['Might', 'May', 'Should', 'Could'], 2, 'Should — кеңес беруге арналған модаль етістік (жасауың керек).'],
+      ['Find the synonym to the word “amusing”:', ['boring', 'funny', 'strict', 'clever'], 1, 'Amusing — көңілді, күлкілі (funny).'],
+      ['The Future Simple tense is used for:', ['permanent states', 'review narrations', 'instant / sudden decisions', 'actions in progress'], 2, 'Future Simple сөйлеу сәтінде қабылданған кенет шешімдерге (spontaneous/instant decisions) қолданылады.'],
+
+      // Section 3: 24.02.2026 & Phrasals & Advanced Idioms
+      ['Choose the correct question tag: "I am working at school, ______?"', ['am not I', 'aren’t I', 'don’t I', 'isn’t I'], 1, '"I am" құрылымының ресми question tag түрі — "aren’t I?".'],
+      ['Choose the correct phrasal verb form: "I need to brush ______ my English before the interview."', ['up on', 'out of', 'off with', 'down to'], 0, '«Brush up on something» — білімді жаңғырту, қайталап еске түсіру.'],
+      ['"It was John who ______ through his phone during the lecture."', ['stood', 'scrolled', 'put', 'held'], 1, '«Scroll through a phone» — телефон қарап, лента ақтару.'],
+      ['"Can you ______ me ______ to Mr. Jones, please?" (connect by phone)', ['put ... out', 'put ... through', 'put ... up', 'put ... off'], 1, '«Put someone through» — телефон арқылы байланыстыру/қосу.'],
+      ['"The handouts and leaflets will be ______ at the entrance."', ['handed out', 'handed in', 'handed over', 'handed up'], 0, '«Hand out» — үлестіру, тарату (distribute).'],
+      ['"The doctor told the patient to ______ on for a minute."', ['hold', 'run', 'drop', 'take'], 0, '«Hold on» — күте тұру (wait a short time).'],
+      ['Expressing ability in the past on a specific occasion:', ['could to', 'was able to', 'can have', 'must to'], 1, 'Өткен шақта нақты бір істі сәтті орындай алу: «was/were able to».'],
+      ['"She looks down on people who are different." The verb "look down on" means:', ['to admire', 'to despise / consider inferior', 'to respect', 'to look after'], 1, '«Look down on» — біреуді өзінен төмен санау, менсінбеу (despise).'],
+      ['A person who cares deeply about other people’s feelings is:', ['selfish', 'bossy', 'considerate', 'pushy'], 2, 'Considerate — өзгелердің жағдайын ойлайтын, ілтипатты.'],
+      ['"I have ______ money to buy this textbook." (sufficient)', ['enough', 'little', 'too', 'many'], 0, 'Enough money — жеткілікті ақша.'],
+      ['"I have ______ money, but not much." (small positive amount)', ['a little', 'little', 'a few', 'few'], 0, 'A little — аз да болса бар (оң мағына). Little — тым аз, жетпейді.'],
+      ['"The more you exercise, the ______ you become."', ['more fit', 'fitter', 'fittest', 'fit'], 1, 'Қос салыстырмалы құрылым: The more... the fitter... (Неғұрлым көп жаттықсаң, соғұрлым шымыр боласың).'],
+      ['"This modern skyscraper stands ______ the strong wind."', ['out', 'against', 'up', 'down'], 1, '«Stand against» — төтеп беру, қарсы тұру (withstand).'],
+      ['"That tall and impressive building ______ in the city skyline."', ['stands out', 'stands down', 'stands for', 'stands in'], 0, '«Stand out» — ерекшеленіп көріну, көзге түсу.'],
+      ['A leap year has ______ days and February has 29 days.', ['365', '366', '364', '367'], 1, 'Leap year (кібісе жыл) 366 күннен тұрады.'],
+      ['Identify the correct prefix derivation:', ['untake', 'uptake', 'misbring', 'disgive'], 1, 'Uptake (қабылдау, сіңіру) — ағылшын тіліндегі лексикалық сөз.'],
+      ['"Endorphins are released ______ sleeping."', ['while', 'during of', 'for', 'since'], 0, 'While + V-ing: "while sleeping" (ұйықтау кезінде).'],
+      ['"We have received plenty of applications ______."', ['so far', 'ago', 'yesterday', 'last year'], 0, 'Present Perfect-пен үйлесетін көрсеткіш: «so far» (осы уақытқа дейін).'],
+      ['"The person you see in the picture is a friend ______."', ['of mine', 'of my', 'to me', 'mine'], 0, 'Қос тәуелдік құрылымы: «a friend of mine» (менің бір досым).'],
+      ['"Look, we are going to be late! — Don\'t worry, I ______ ready right now."', ['will get', 'am getting', 'am getting to', 'got'], 0, 'Сөйлеу сәтіндегі уәде/шешім: "I will get ready".'],
+      ['"The firefighters ______ the fire quickly."', ['put through', 'put out', 'put up', 'put off'], 1, '«Put out a fire» — өртті сөндіру (extinguish).'],
+      ['"I hope I am not ______ you ______ by asking for this favor." (causing trouble)', ['putting ... out', 'putting ... through', 'putting ... up', 'putting ... off'], 0, '«Put someone out» — біреуге машақат келтіру, мазалау (inconvenience).'],
+      ['"They have ______ a new statue in the central square."', ['put out', 'put up', 'put down', 'put by'], 1, '«Put up a statue/building» — ескерткіш немесе ғимарат орнату, салу.'],
+      ['"He isn’t answering his phone. He ______ on vacation."', ['must be', 'can to be', 'should to be', 'ought be'], 0, 'Осы шақтағы 100% сенімді болжам: «must be» (демалыста болуы керек).'],
+      ['Inversion: "Hardly ______ when the phone rang."', ['I had sat', 'had I sat', 'did I sat', 'was I sitting'], 1, 'Hardly сөзінен басталған инверсия: Hardly + had + Subject + V3... when...'],
+      ['"The CEO spoke ______ about the company\'s bright future."', ['confidence', 'confidently', 'confident', 'more confident'], 1, 'Етістікті (spoke) үстеу сипаттайды: spoke confidently (сенімді сөйледі).'],
+      ['"She is ______ stronger than her athletic brother."', ['much', 'more', 'many', 'very'], 0, 'Салыстырмалы шырайды күшейту үшін "much", "far", "a lot" қолданылады (much stronger).'],
+      ['"You should ______ date your mobile apps regularly."', ['up', 'down', 'out', 'off'], 0, '«Update» — жаңарту.'],
+      ['"What does \'breathing down his neck\' mean?"', ['To give medical oxygen', 'To stand very close and constantly watch/hurry someone', 'To ignore someone completely', 'To congratulate warmly'], 1, '«Breathe down someone\'s neck» — адамның желкесінде тұрып мазасын алу, асықтыру.'],
+      ['"The meaning of \'get down\' (food/medicine) is:"', ['move to a lower floor', 'swallow although difficult', 'give up', 'continue easily'], 1, '«Get down» (тамақ/дәріні) — зорға жұту, қиындықпен ішу.'],
+      ['"You can\'t imagine the unexpected problems you can ______ on this track."', ['run into', 'run out of', 'run across', 'run over'], 0, '«Run into problems» — күтпеген қиындықтарға тап болу.'],
+      ['"My watch stopped because the battery has ______."', ['run into', 'run out', 'run across', 'run over'], 1, '«Run out» — таусылу, біту.'],
+      ['"The recent discovery ______ our whole perspective on ocean life."', ['already changed', 'has already changed', 'is already changing', 'was already change'], 1, 'Already сөзімен Present Perfect: has already changed.'],
+      ['"You won\'t be able to log in ______ you know the password."', ['provided', 'unless', 'otherwise', 'if'], 1, '«Unless» = if not (егер білмесең).'],
+      ['"Write down the login codes, ______ you will forget them."', ['unless', 'otherwise', 'if', 'provided that'], 1, '«Otherwise» — әйтпесе, кері жағдайда.'],
+
+      // Section 4: 18.02.2026 Idioms, Phrasals & Sliv 07
+      ['The idiom "to recharge one’s batteries" means:', ['to buy a new smartphone charger', 'to rest and regain energy and strength', 'to complete an electrical circuit', 'to run as fast as possible'], 1, '«Recharge one’s batteries» — тынығып, күш-қуатты қалпына келтіру.'],
+      ['The idiom "to call the shots" means:', ['to fire a gun', 'to be in charge and make key decisions', 'to phone multiple friends', 'to referee a match'], 1, '«Call the shots» — басшылық жасау, негізгі шешімдерді қабылдау.'],
+      ['The idiom "to show someone the ropes" means:', ['to tie someone with a rope', 'to explain and teach someone how to do a job', 'to challenge someone to climbing', 'to invite someone to theater'], 1, '«Show someone the ropes» — жаңа адамға істің қыр-сырын үйрету.'],
+      ['The idiom "to reinvent the wheel" means:', ['to invent a bicycle', 'to waste time creating something that already exists', 'to fix a broken vehicle', 'to win a sports race'], 1, '«Reinvent the wheel» — бар нәрсені қайта ойлап тауып, босқа уақыт кетіру.'],
+      ['The idiom "to turn over a new leaf" means:', ['to read a page in a book', 'to start behaving in a better, renewed way', 'to plant autumn trees', 'to clean the desk'], 1, '«Turn over a new leaf» — өмірді жаңа парақтан, таза бастау.'],
+      ['The idiom "set in stone" means:', ['carved on a museum rock', 'permanent and impossible to change', 'very heavy to carry', 'built of solid concrete'], 1, '«Set in stone» — өзгертілмейтін, мызғымас.'],
+      ['The idiom "to break the mould" means:', ['to break a ceramic cup', 'to do something completely differently from tradition', 'to bake bread without shapes', 'to lose control'], 1, '«Break the mould» — қалыптасқан ескі қағидаларды бұзып, жаңаша жасау.'],
+      ['The idiom "at the eleventh hour" means:', ['at 11 o’clock sharp', 'at the very last possible moment', 'before midnight', 'early in the morning'], 1, '«At the eleventh hour» — дәл соңғы сәтте, кеш қалу алдында.'],
+      ['The idiom "to call it a day" means:', ['to name the day of the week', 'to decide to stop working for the rest of the day', 'to celebrate an anniversary', 'to stay up all night'], 1, '«Call it a day» — бүгінгі жұмысты тәмамдау, аяқтау.'],
+      ['Choose the correct adjective order:', ['a Chinese pretty little girl', 'a pretty little Chinese girl', 'a little pretty Chinese girl', 'a Chinese little pretty girl'], 1, 'Opinion (pretty) -> Size (little) -> Origin (Chinese) -> girl.'],
+      ['"I am sorry, but I ______ tell you that you didn\'t qualify."', ['have to', 'must to', 'ought', 'should to'], 0, 'Сыртқы жағдайға байланысты қажеттілік: «have to tell you».'],
+      ['"Don’t be late for the exam! Come ______ time."', ['in', 'at', 'on', 'by'], 2, '«On time» — дәл белгіленген уақытта (punctual). «In time» — ертерек, үлгеріп келу.'],
+      ['"______ experienced he may be, the actor still gets stagefright."', ['Although', 'However', 'Despite', 'Because'], 1, '«However + adjective + subject + verb» — қаншалықты тәжірибелі болса да.'],
+      ['"I am really looking forward to ______ you in London."', ['meet', 'meeting', 'met', 'have met'], 1, 'Тұрақты құрылым: «look forward to + V-ing» (күту, асығу).'],
+      ['"She tried to put ______ some money every month for her tuition."', ['out', 'aside', 'through', 'up'], 1, '«Put aside money» — ақшаны кейінге жинап қою (save).'],
+      ['Identify the Present Continuous Passive Voice form:', ['is/are being + V3', 'has/have been + V3', 'was/were being + V3', 'will be + V3'], 0, 'Present Continuous Passive: Subject + is/are/am + being + Past Participle (V3).'],
+      ['The verb "to tolerate" means:', ['to refuse completely', 'to accept or endure someone\'s behavior without complaining', 'to celebrate loudly', 'to insult'], 1, 'Tolerate — шыдау, төзу (bear, endure).'],
+      ['"Pickpocketing" is categorized as:', ['a violent bank robbery', 'stealing from someone’s pocket or bag in a crowd', 'shoplifting large items', 'cyber computer hacking'], 1, 'Pickpocketing — адамдар көп жерде қалтадан ұрлау (қалта ұрлығы).'],
+      ['The meaning of "to pay through the nose" is:', ['to buy medicine for a cold', 'to pay an excessively high price', 'to pay with coins only', 'to refuse to pay bills'], 1, '«Pay through the nose» — тым көп, орынсыз ақша төлеу.'],
+      ['The adjective "shrewd" is synonymous with:', ['clumsy and slow', 'clever, smart, and having good judgment', 'lazy and careless', 'aggressive and violent'], 1, 'Shrewd — ақылды, алғыр, қырағы (clever, astute).'],
+      ['The meaning of "resplendent" is:', ['dull and dark', 'splendid, attractive and impressive', 'cheap and fake', 'silent and quiet'], 1, 'Resplendent — сән-салтанатты, көздің жауын алатын (splendid, dazzling).'],
+      ['The synonym of "loyalty" is:', ['betrayal', 'allegiance / faithfulness', 'suspicion', 'arrogance'], 1, 'Loyalty — адалдық, берілгендік (allegiance, devotion).'],
+      ['"To blow your top" means:', ['to fly a kite', 'to lose your temper and become very angry', 'to take off your hat', 'to climb a mountain'], 1, '«Blow your top» — ашуға булығып, өзін ұстай алмай қалу.'],
+      ['A noun form derived from "similar" is:', ['similarness', 'similarity', 'similarty', 'similance'], 1, 'Similar -> Similarity (ұқсастық).'],
+      ['The word "precursor" means:', ['a follower who arrives last', 'a forerunner / something that comes before', 'a vehicle engine', 'an old building'], 1, 'Precursor — ізашар, бастамасы болған құбылыс (forerunner).']
+    ];
+
+    /* =========================================================================
+       3. ORGANIZE 4 COMPREHENSIVE PRACTICE MODULES
+       ========================================================================= */
+    const PRACTICE_MODULES = [
+      {
+        id: 'mod1',
+        title: '1-бөлім: Grammar & Core Structures (SLIV 02 & 04)',
+        subtitle: 'Conditionals, Reported Speech, Inversion, Gerund vs Infinitive',
+        badge: '34 СҰРАҚ',
+        color: 'from-blue-600/20 to-indigo-600/20 border-blue-400/40',
+        slice: [0, 34]
+      },
+      {
+        id: 'mod2',
+        title: '2-бөлім: Morphology, Tenses & Suffixes (SLIV 05)',
+        subtitle: 'Uncountables, Possessives, Modal Verbs, Passive, Clauses',
+        badge: '34 СҰРАҚ',
+        color: 'from-purple-600/20 to-fuchsia-600/20 border-purple-400/40',
+        slice: [34, 68]
+      },
+      {
+        id: 'mod3',
+        title: '3-бөлім: Phrasal Verbs & 24.02.2026 Слив',
+        subtitle: 'Put out/through/up, Run into, Look down on, Inversion, Question Tags',
+        badge: '35 СҰРАҚ',
+        color: 'from-amber-600/20 to-orange-600/20 border-amber-400/40',
+        slice: [68, 103]
+      },
+      {
+        id: 'mod4',
+        title: '4-бөлім: 18.02.2026 Idioms, Collocations & Traps',
+        subtitle: 'Batteries, Shots, Ropes, Eleventh hour, Adjective order, Shrewd',
+        badge: '25 СҰРАҚ',
+        color: 'from-rose-600/20 to-pink-600/20 border-rose-400/40',
+        slice: [103, 128]
+      }
+    ];
+
+    /* =========================================================================
+       4. INTERACTIVE CRIB-SHEET DATA (IDIOOMS, PHRASALS, GRAMMAR SECRETS)
+       ========================================================================= */
+    const CRIB_ENTRIES = [
+      { tag: 'Idiom', title: 'Look down on', val: 'Менсінбеу, өзінен төмен санау (Despise, consider inferior)' },
+      { tag: 'Idiom', title: 'Breathe down someone\'s neck', val: 'Мазасын алып, асықтыру, желкесінде тұру (Watch and hurry someone)' },
+      { tag: 'Idiom', title: 'Recharge one\'s batteries', val: 'Күш-қуатты қалпына келтіру, демалу (Rest and regain energy)' },
+      { tag: 'Idiom', title: 'Call the shots', val: 'Басшы болу, негізгі шешімді қабылдау (Be in charge)' },
+      { tag: 'Idiom', title: 'Show someone the ropes', val: 'Істің қыр-сырын үйрету, жоспарға енгізу (Teach the procedures)' },
+      { tag: 'Idiom', title: 'At the eleventh hour', val: 'Ең соңғы сәтте, кеш қалу алдында (At the very last moment)' },
+      { tag: 'Idiom', title: 'Call it a day', val: 'Жұмысты бүгінге тоқтату (Stop working for the day)' },
+      { tag: 'Idiom', title: 'Set in stone', val: 'Өзгертуге келмейтін, мызғымас (Permanent, unchangeable)' },
+      { tag: 'Idiom', title: 'Break the mould', val: 'Дәстүрлі қалыпты бұзып, жаңаша жасау (Do something differently)' },
+      { tag: 'Idiom', title: 'To be a rip-off', val: 'Бағасына татымайтын, тым қымбат (Not be worth the price)' },
+      { tag: 'Idiom', title: 'Pay through the nose', val: 'Тым қымбат баға төлеу (Pay far too much money)' },
+      { tag: 'Phrasal Verb', title: 'Put out', val: 'Өртті сөндіру (Extinguish a fire); мазалау/машақат тудыру' },
+      { tag: 'Phrasal Verb', title: 'Put through', val: 'Телефон желісі арқылы байланыстыру (Connect by phone)' },
+      { tag: 'Phrasal Verb', title: 'Put up', val: 'Ескерткіш не ғимарат тұрғызу (Erect a statue / building)' },
+      { tag: 'Phrasal Verb', title: 'Put aside', val: 'Ақша не нәрсені кейінге жинап қою (Save money)' },
+      { tag: 'Phrasal Verb', title: 'Run into', val: 'Қиындықтарға тап болу (Encounter unexpected problems)' },
+      { tag: 'Phrasal Verb', title: 'Run out of', val: 'Таусылып қалу (Have none left: run out of time/bread)' },
+      { tag: 'Phrasal Verb', title: 'Brush up on', val: 'Ұмытылған білімді қайталап жаңғырту (Refresh knowledge)' },
+      { tag: 'Phrasal Verb', title: 'Stand out', val: 'Ерекше көзге түсіп тұру (Be noticeable, impressive)' },
+      { tag: 'Phrasal Verb', title: 'Stand against', val: 'Қарсы тұру, желге төтеп беру (Withstand strong forces)' },
+      { tag: 'Phrasal Verb', title: 'Get down', val: 'Қиындықпен зорға жұту (Swallow food/medicine with difficulty)' },
+      { tag: 'Phrasal Verb', title: 'Hold on', val: 'Күте тұру (Wait for a short time)' },
+      { tag: 'Grammar', title: 'Inversion (Hardly...)', val: 'Hardly + had + S + V3... when... (Hardly had I sat when the phone rang)' },
+      { tag: 'Grammar', title: 'Question Tag (I am)', val: 'I am working, aren\'t I? (I am сөзіне болымсыз таг: aren\'t I)' },
+      { tag: 'Grammar', title: 'Adjective Order (OSASCOMP)', val: 'Opinion -> Size -> Age -> Shape -> Color -> Origin -> Material -> Purpose (a pretty little Chinese girl)' },
+      { tag: 'Grammar', title: 'Uncountable Traps', val: 'Advice, information, furniture, luggage, news (әрі жекеше етістік "is")' },
+      { tag: 'Grammar', title: 'Gerund vs Infinitive', val: 'Enjoy, mind, stop (reading), look forward to + V-ing | Manage, agree, decide + to-V' },
+      { tag: 'Vocabulary', title: 'Pushy', val: 'Синонимі: aggressive, bold, domineering | Антонимі: meek, unassertive' },
+      { tag: 'Vocabulary', title: 'Precursor', val: 'Синонимі: Forerunner (алғашқы ізашар, бастамасы болған құбылыс)' },
+      { tag: 'Vocabulary', title: 'Shrewd', val: 'Синонимі: Clever, smart, astute (қырағы, ақылды)' },
+      { tag: 'Vocabulary', title: 'Resplendent', val: 'Синонимі: Splendid, dazzling (көз тартарлық, сән-салтанатты)' },
+      { tag: 'Vocabulary', title: 'Loyalty', val: 'Синонимі: Allegiance, devotion, faithfulness (адалдық, берілгендік)' }
+    ];
+
+    /* =========================================================================
+       5. INDEX ALL QUESTIONS (GLOBAL REGISTRY)
+       ========================================================================= */
+    const QUESTION_REGISTRY = new Map();
+
+    function registerAllQuestions() {
+      // Register grammar/vocab questions
+      SLIV_QUESTIONS.forEach((tuple, idx) => {
+        const id = `sliv_q_${idx}`;
+        QUESTION_REGISTRY.set(id, {
+          id,
+          q: tuple[0],
+          o: tuple[1],
+          a: tuple[2],
+          e: tuple[3],
+          readingKey: null
+        });
+      });
+
+      // Register reading text questions
+      Object.entries(READING_TEXTS).forEach(([rKey, textObj]) => {
+        textObj.qs.forEach((tuple, idx) => {
+          const id = `read_${rKey}_${idx}`;
+          QUESTION_REGISTRY.set(id, {
+            id,
+            q: tuple[0],
+            o: tuple[1],
+            a: tuple[2],
+            e: tuple[3],
+            readingKey: rKey
+          });
+        });
+      });
+    }
+    registerAllQuestions();
+
+    /* =========================================================================
+       6. WEB AUDIO SOUND ENGINE
+       ========================================================================= */
+    const SoundFX = (() => {
+      let ctx = null;
+      function getCtx() {
+        if (!ctx) {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) ctx = new AC();
+        }
+        if (ctx && ctx.state === 'suspended') ctx.resume();
+        return ctx;
+      }
+      function tone(freq, dur, type = 'sine', vol = 0.14, delay = 0) {
+        if (!state.soundOn) return;
+        try {
+          const c = getCtx();
+          if (!c) return;
+          const osc = c.createOscillator();
+          const gain = c.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, c.currentTime + delay);
+          gain.gain.setValueAtTime(vol, c.currentTime + delay);
+          gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + delay + dur);
+          osc.connect(gain);
+          gain.connect(c.destination);
+          osc.start(c.currentTime + delay);
+          osc.stop(c.currentTime + delay + dur);
+        } catch (e) {}
+      }
+      return {
+        correct(streak) {
+          const boost = Math.min(streak, 6) * 32;
+          tone(523.25 + boost, 0.12, 'triangle', 0.15, 0);
+          tone(659.25 + boost, 0.14, 'triangle', 0.15, 0.08);
+          tone(783.99 + boost, 0.2, 'sine', 0.18, 0.16);
+          if (streak >= 3) tone(1046.5, 0.25, 'triangle', 0.18, 0.24);
+        },
+        wrong() {
+          tone(220, 0.14, 'sawtooth', 0.09, 0);
+          tone(160, 0.22, 'sawtooth', 0.09, 0.1);
+        },
+        click() { tone(480, 0.04, 'sine', 0.05, 0); },
+        finish(passed) {
+          const notes = passed ? [523.25, 659.25, 783.99, 1046.5, 1318.5] : [440, 523.25, 659.25];
+          notes.forEach((f, i) => tone(f, 0.22, 'triangle', 0.14, i * 0.09));
+        }
+      };
+    })();
+
+    /* =========================================================================
+       7. LOCALSTORAGE PERSISTENCE
+       ========================================================================= */
+    const STORE_KEY = 'eng_kvaltest_2026_quizizz_store';
+
+    function loadStore() {
+      try {
+        const raw = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+        return {
+          best: raw.best || {},
+          bestExam: raw.bestExam || null,
+          totalSolved: raw.totalSolved || 0,
+          mistakes: Array.isArray(raw.mistakes) ? raw.mistakes : []
+        };
+      } catch {
+        return { best: {}, bestExam: null, totalSolved: 0, mistakes: [] };
+      }
+    }
+
+    function saveStore(data) {
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
+    }
+
+    function recordAnswerInStore(qId, isCorrect, isMistakeSession) {
+      const store = loadStore();
+      store.totalSolved = (store.totalSolved || 0) + 1;
+      if (!isCorrect) {
+        if (!store.mistakes.includes(qId)) store.mistakes.push(qId);
+      } else if (isMistakeSession) {
+        store.mistakes = store.mistakes.filter(id => id !== qId);
+      }
+      saveStore(store);
+    }
+
+    function saveQuizBest(key, percent, correct, total) {
+      const store = loadStore();
+      if (key === 'exam50') {
+        if (!store.bestExam || correct > store.bestExam.correct) {
+          store.bestExam = { correct, total, percent };
+        }
+      } else if (key) {
+        const prev = store.best[key];
+        if (!prev || percent > prev.percent) {
+          store.best[key] = { percent, correct, total };
+        }
+      }
+      saveStore(store);
+    }
+
+    /* =========================================================================
+       8. APP STATE & CONTROLLERS
+       ========================================================================= */
+    const LETTERS = ['A', 'B', 'C', 'D'];
+    const GAME_SEC = 60;
+    const EXAM_TOTAL_SEC = 60 * 60;
+
+    const state = {
+      mode: 'game',       // 'game' | 'study'
+      activeTab: 'slivs',
+      soundOn: true,
+      quizType: 'normal', // 'normal' | 'exam' | 'mistakes'
+      quizKey: null,
+      quizTitle: '',
+      questions: [],
+      lastPayload: null,
+      currentIndex: 0,
+      answers: [],
+      score: 0,
+      streak: 0,
+      bestStreak: 0,
+      timeLeft: GAME_SEC,
+      timerId: null,
+      startTime: 0,
+      showTranslation: false
+    };
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function clearTimer() {
+      if (state.timerId) {
+        clearInterval(state.timerId);
+        state.timerId = null;
+      }
+    }
+
+    function showScreen(id) {
+      ['screen-home', 'screen-quiz', 'screen-results'].forEach(s => {
+        document.getElementById(s).classList.toggle('hidden', s !== id);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function formatMMSS(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function setMode(m) {
+      SoundFX.click();
+      state.mode = m;
+      const g = document.getElementById('mode-btn-game');
+      const s = document.getElementById('mode-btn-study');
+      const d = document.getElementById('mode-desc');
+      if (m === 'game') {
+        g.className = 'flex-1 md:flex-none px-4 py-2 rounded-lg text-xs sm:text-sm font-extrabold transition bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow';
+        s.className = 'flex-1 md:flex-none px-4 py-2 rounded-lg text-xs sm:text-sm font-extrabold transition text-indigo-300 hover:text-white';
+        d.innerHTML = '🔥 <strong>Ойын режимі:</strong> Әр сұраққа 60 секунд, жылдамдық бонусы (+1000 ұпай) және streak сериясы.';
+      } else {
+        s.className = 'flex-1 md:flex-none px-4 py-2 rounded-lg text-xs sm:text-sm font-extrabold transition bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow';
+        g.className = 'flex-1 md:flex-none px-4 py-2 rounded-lg text-xs sm:text-sm font-extrabold transition text-indigo-300 hover:text-white';
+        d.innerHTML = '📚 <strong>Жаттау режимі:</strong> Таймерсіз, толық грамматикалық түсіндірме + кез келген сұраққа өту навигаторы.';
+      }
+    }
+
+    function toggleSound() {
+      state.soundOn = !state.soundOn;
+      if (state.soundOn) SoundFX.click();
+      document.getElementById('sound-icon-home').textContent = state.soundOn ? '🔊' : '🔇';
+      document.getElementById('sound-text-home').textContent = state.soundOn ? 'Дыбыс: Қосулы' : 'Дыбыс: Өшірулі';
+      document.getElementById('btn-sound-quiz').textContent = state.soundOn ? '🔊' : '🔇';
+    }
+
+    function switchTab(tab) {
+      SoundFX.click();
+      state.activeTab = tab;
+      ['slivs', 'texts', 'exam', 'crib'].forEach(t => {
+        const btn = document.getElementById(`nav-tab-${t}`);
+        const panel = document.getElementById(`tab-panel-${t}`);
+        const active = t === tab;
+        panel.classList.toggle('hidden', !active);
+        btn.className = active
+          ? 'py-3 px-3 rounded-2xl font-extrabold text-xs sm:text-sm transition border shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600 border-indigo-400/60 text-white'
+          : 'py-3 px-3 rounded-2xl font-extrabold text-xs sm:text-sm transition border bg-[#151a2d] border-indigo-500/25 text-indigo-200 hover:bg-indigo-900/40';
+      });
+      if (tab === 'crib') renderCribSheet();
+    }
+
+    /* =========================================================================
+       9. HOME DASHBOARD & RENDERING
+       ========================================================================= */
+    function renderDashboard() {
+      const store = loadStore();
+      document.getElementById('dash-total-q').textContent = QUESTION_REGISTRY.size;
+      document.getElementById('dash-solved').textContent = store.totalSolved;
+
+      if (store.bestExam) {
+        document.getElementById('dash-best-exam').textContent = `${store.bestExam.correct}/50`;
+        document.getElementById('dash-exam-tag').textContent = store.bestExam.correct >= 40 ? '✅ 40+ Меже орындалды!' : `${store.bestExam.percent}% (Мақсат 40+)`;
+        document.getElementById('exam-best-note').textContent = `🏆 Сіздің үздік нәтижеңіз: ${store.bestExam.correct} / 50 (${store.bestExam.percent}%)`;
+      } else {
+        document.getElementById('dash-best-exam').textContent = '—';
+        document.getElementById('dash-exam-tag').textContent = 'Мақсат: 40+/50';
+        document.getElementById('exam-best-note').textContent = '';
+      }
+
+      const validMistakes = store.mistakes.filter(id => QUESTION_REGISTRY.has(id));
+      document.getElementById('dash-mistakes-count').textContent = validMistakes.length;
+      document.getElementById('btn-dash-mistakes').disabled = validMistakes.length === 0;
+      document.getElementById('btn-clear-mistakes').classList.toggle('hidden', validMistakes.length === 0);
+    }
+
+    function renderSlivsGrid() {
+      const store = loadStore();
+      const grid = document.getElementById('slivs-grid');
+      grid.innerHTML = '';
+
+      PRACTICE_MODULES.forEach(m => {
+        const best = store.best[m.id];
+        const card = document.createElement('div');
+        card.className = `card-surface bg-gradient-to-br ${m.color} rounded-3xl p-5 sm:p-6 flex flex-col justify-between shadow-xl transition hover:-translate-y-1`;
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="px-2.5 py-1 rounded-full bg-white/15 text-white text-[11px] font-black">${m.badge}</span>
+              <span class="text-xs font-extrabold ${best ? 'text-emerald-300' : 'text-indigo-300/70'}">
+                ${best ? `🏆 ${best.percent}% (${best.correct}/${best.total})` : 'Жаңа'}
+              </span>
+            </div>
+            <h3 class="text-lg sm:text-xl font-black text-white">${m.title}</h3>
+            <p class="text-xs sm:text-sm text-indigo-200/80 mt-1 leading-relaxed">${m.subtitle}</p>
+          </div>
+          <div class="mt-5 pt-3 border-t border-white/10 flex gap-2">
+            <button onclick="startModule('${m.id}', false)"
+              class="flex-1 py-2.5 px-3 rounded-xl bg-white/15 hover:bg-white/25 text-white font-extrabold text-xs sm:text-sm transition">
+              ▶ Бастау
+            </button>
+            <button onclick="startModule('${m.id}', true)" title="Араластырып өту"
+              class="px-3 py-2.5 rounded-xl bg-[#090d16]/75 hover:bg-[#090d16] border border-white/15 text-indigo-100 font-bold text-xs transition">
+              🔀 Аралас
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderTextsGrid() {
+      const store = loadStore();
+      const grid = document.getElementById('texts-grid');
+      grid.innerHTML = '';
+
+      Object.entries(READING_TEXTS).forEach(([rKey, textObj], idx) => {
+        const best = store.best[`text_${rKey}`];
+        const card = document.createElement('div');
+        card.className = 'card-surface hover:border-cyan-400/70 rounded-2xl p-4 flex flex-col justify-between cursor-pointer transition hover:-translate-y-0.5 shadow-lg';
+        card.onclick = () => startSingleReading(rKey);
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-1.5">
+              <span class="text-xs font-extrabold text-cyan-300">#${idx + 1} • ${textObj.qs.length} сұрақ</span>
+              <span class="text-xs font-bold ${best ? 'text-emerald-300' : 'text-indigo-300/60'}">
+                ${best ? `✅ ${best.percent}%` : 'Тест →'}
+              </span>
+            </div>
+            <h4 class="text-base font-black text-white">${textObj.icon} ${textObj.title}</h4>
+            <p class="text-xs text-indigo-200/75 mt-1.5 leading-relaxed line-clamp-2">${textObj.kz}</p>
+          </div>
+          <div class="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between text-xs font-bold text-fuchsia-300">
+            <span>Мәтінді оқу & жаттығу</span>
+            <span>▶ Бастау</span>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderCribSheet() {
+      const q = (document.getElementById('crib-search').value || '').trim().toLowerCase();
+      const list = document.getElementById('crib-list');
+      list.innerHTML = '';
+
+      const filtered = CRIB_ENTRIES.filter(item => {
+        return !q || item.title.toLowerCase().includes(q) || item.val.toLowerCase().includes(q) || item.tag.toLowerCase().includes(q);
+      });
+
+      if (!filtered.length) {
+        list.innerHTML = '<div class="col-span-2 card-surface rounded-2xl p-8 text-center text-indigo-300 font-bold">Іздеу бойынша сөз немесе ереже табылмады 🔍</div>';
+        return;
+      }
+
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'p-3.5 sm:p-4 rounded-2xl bg-[#090d16] border border-indigo-500/25 flex flex-col justify-between';
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-1">
+              <span class="px-2 py-0.5 rounded-md bg-indigo-900/60 text-cyan-300 text-[10px] font-black uppercase">${item.tag}</span>
+              <button onclick="copyToClipboard('${item.title} — ${item.val}')" class="text-xs text-indigo-400 hover:text-white" title="Көшіріп алу">📋</button>
+            </div>
+            <h4 class="text-base font-black text-white">${item.title}</h4>
+            <p class="text-xs sm:text-sm text-indigo-100/90 mt-1.5 leading-relaxed">${item.val}</p>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    function copyToClipboard(text) {
+      const el = document.createElement('textarea');
+      el.value = text;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      SoundFX.click();
+    }
+
+    function goHome() {
+      clearTimer();
+      SoundFX.click();
+      renderDashboard();
+      renderSlivsGrid();
+      renderTextsGrid();
+      showScreen('screen-home');
+    }
+
+    /* =========================================================================
+       10. QUIZ LAUNCHERS
+       ========================================================================= */
+    function startModule(modId, doShuffle) {
+      const mod = PRACTICE_MODULES.find(m => m.id === modId);
+      if (!mod) return;
+      const ids = [];
+      for (let i = mod.slice[0]; i < mod.slice[1]; i++) {
+        ids.push(`sliv_q_${i}`);
+      }
+      let list = ids.map(id => QUESTION_REGISTRY.get(id)).filter(Boolean);
+      if (doShuffle) list = shuffle(list);
+      launchQuiz({
+        type: 'normal',
+        key: mod.id,
+        title: mod.title,
+        questions: list
+      });
+    }
+
+    function startSingleReading(rKey) {
+      const textObj = READING_TEXTS[rKey];
+      if (!textObj) return;
+      const list = textObj.qs.map((_, idx) => QUESTION_REGISTRY.get(`read_${rKey}_${idx}`));
+      launchQuiz({
+        type: 'normal',
+        key: `text_${rKey}`,
+        title: `${textObj.icon} ${textObj.title}`,
+        questions: list
+      });
+    }
+
+    function startAllTextsMarathon() {
+      const list = [];
+      Object.keys(READING_TEXTS).forEach(rKey => {
+        READING_TEXTS[rKey].qs.forEach((_, idx) => {
+          list.push(QUESTION_REGISTRY.get(`read_${rKey}_${idx}`));
+        });
+      });
+      launchQuiz({
+        type: 'normal',
+        key: 'texts_marathon',
+        title: '🔥 Барлық 12 Мәтін Марафоны (Reading Hub)',
+        questions: list
+      });
+    }
+
+    function startExamSimulator() {
+      // Pick 40 random grammar/sliv questions
+      const allSlivs = [];
+      SLIV_QUESTIONS.forEach((_, idx) => allSlivs.push(QUESTION_REGISTRY.get(`sliv_q_${idx}`)));
+      const pickedGrammar = shuffle(allSlivs).slice(0, 40);
+
+      // Pick 2 random reading texts and their questions (approx 10-12 questions)
+      const pickedTextKeys = shuffle(Object.keys(READING_TEXTS)).slice(0, 2);
+      const pickedReading = [];
+      pickedTextKeys.forEach(rKey => {
+        READING_TEXTS[rKey].qs.forEach((_, idx) => {
+          pickedReading.push(QUESTION_REGISTRY.get(`read_${rKey}_${idx}`));
+        });
+      });
+
+      const examSet = [...pickedGrammar, ...pickedReading].slice(0, 50);
+
+      launchQuiz({
+        type: 'exam',
+        key: 'exam50',
+        title: '🏆 50 Сұрақ Ағылшын Тілі Емтиханы',
+        questions: examSet
+      });
+    }
+
+    function startMistakesQuiz() {
+      const store = loadStore();
+      const list = store.mistakes.map(id => QUESTION_REGISTRY.get(id)).filter(Boolean);
+      if (!list.length) return;
+      launchQuiz({
+        type: 'mistakes',
+        key: null,
+        title: `🔄 Қателер банкі (${list.length} сұрақ)`,
+        questions: shuffle(list)
+      });
+    }
+
+    function launchQuiz(payload) {
+      SoundFX.click();
+      clearTimer();
+      state.lastPayload = payload;
+      state.quizType = payload.type;
+      state.quizKey = payload.key;
+      state.quizTitle = payload.title;
+      state.questions = payload.questions;
+      state.currentIndex = 0;
+      state.answers = new Array(payload.questions.length).fill(null);
+      state.score = 0;
+      state.streak = 0;
+      state.bestStreak = 0;
+      state.startTime = Date.now();
+      state.showTranslation = false;
+
+      const isExam = state.quizType === 'exam';
+      const isStudy = !isExam && state.mode === 'study';
+
+      document.getElementById('hud-title').textContent = state.quizTitle;
+      document.getElementById('hud-exam-goal').classList.toggle('hidden', !isExam);
+      document.getElementById('hud-timer-box').classList.toggle('hidden', isStudy);
+      document.getElementById('hud-score-box').classList.toggle('hidden', isStudy);
+      document.getElementById('btn-prev').classList.toggle('hidden', !isStudy && !isExam);
+      document.getElementById('navigator-bar').classList.toggle('hidden', !isStudy && !isExam);
+
+      showScreen('screen-quiz');
+
+      if (isExam) {
+        state.timeLeft = EXAM_TOTAL_SEC;
+        startExamTimer();
+      }
+      renderQuestion();
+    }
+
+    function restartLastQuiz() {
+      if (state.quizType === 'exam') startExamSimulator();
+      else if (state.lastPayload) launchQuiz(state.lastPayload);
+    }
+
+    function retryWrongQuestions() {
+      const wrong = state.questions.filter((q, idx) => state.answers[idx] !== q.a);
+      if (!wrong.length) return;
+      launchQuiz({
+        type: 'mistakes',
+        key: null,
+        title: `🔄 Қатемен жұмыс (${wrong.length} сұрақ)`,
+        questions: wrong
+      });
+    }
+
+    /* =========================================================================
+       11. RENDER QUESTION, READING BANNER & OPTIONS
+       ========================================================================= */
+    function renderQuestion() {
+      if (state.quizType !== 'exam') clearTimer();
+
+      const q = state.questions[state.currentIndex];
+      const total = state.questions.length;
+      const ua = state.answers[state.currentIndex];
+      const isAnswered = ua !== null;
+      const isExam = state.quizType === 'exam';
+      const isStudy = !isExam && state.mode === 'study';
+
+      // HUD
+      document.getElementById('hud-counter').textContent = `${state.currentIndex + 1} / ${total}`;
+      document.getElementById('hud-score').textContent = state.score.toLocaleString('ru-RU');
+
+      const answeredCount = state.answers.filter(a => a !== null).length;
+      document.getElementById('hud-progress').style.width = `${(answeredCount / total) * 100}%`;
+
+      if (isExam) {
+        let okCount = 0;
+        state.questions.forEach((item, idx) => { if (state.answers[idx] === item.a) okCount++; });
+        const goalBadge = document.getElementById('hud-exam-goal');
+        goalBadge.textContent = `${okCount} / 40 меже`;
+        goalBadge.className = okCount >= 40
+          ? 'px-2 py-0.5 rounded-lg bg-emerald-500/25 border border-emerald-400 text-emerald-200 text-xs font-black'
+          : 'px-2 py-0.5 rounded-lg bg-amber-500/20 border border-amber-400/40 text-amber-200 text-xs font-extrabold';
+      }
+
+      const streakBox = document.getElementById('hud-streak-box');
+      if (!isStudy && state.streak >= 2) {
+        streakBox.classList.remove('hidden');
+        streakBox.classList.add('flex', 'streak-glow');
+        document.getElementById('hud-streak').textContent = state.streak;
+      } else {
+        streakBox.classList.add('hidden');
+        streakBox.classList.remove('flex', 'streak-glow');
+      }
+
+      // Reading text banner
+      const readBox = document.getElementById('q-reading-box');
+      if (q.readingKey && READING_TEXTS[q.readingKey]) {
+        const r = READING_TEXTS[q.readingKey];
+        readBox.classList.remove('hidden');
+        document.getElementById('q-reading-title').textContent = `📖 МӘТІН: ${r.icon} ${r.title}`;
+        document.getElementById('q-reading-en').textContent = r.en;
+        document.getElementById('q-reading-kz').textContent = r.kz;
+        document.getElementById('q-reading-kz').classList.toggle('hidden', !state.showTranslation);
+      } else {
+        readBox.classList.add('hidden');
+      }
+
+      // Question Text
+      document.getElementById('q-text').textContent = `${state.currentIndex + 1}. ${q.q}`;
+
+      // Explanation Box
+      const expBox = document.getElementById('q-explain-box');
+      const expTxt = document.getElementById('q-explain-text');
+      if (isAnswered && q.e) {
+        expBox.classList.remove('hidden');
+        expTxt.textContent = q.e;
+      } else {
+        expBox.classList.add('hidden');
+      }
+
+      // Options
+      const grid = document.getElementById('options-grid');
+      grid.innerHTML = '';
+
+      q.o.forEach((optText, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        let cls = `quiz-tile tile-${idx} w-full text-left p-4 sm:p-5 rounded-2xl text-white font-bold text-base sm:text-lg flex items-center gap-3 min-h-[70px] sm:min-h-[82px]`;
+        if (isAnswered) {
+          btn.disabled = true;
+          if (idx === q.a) cls += ' tile-correct';
+          else if (idx === ua) cls += ' tile-wrong';
+          else cls += ' tile-dimmed';
+        }
+        btn.className = cls;
+        btn.onclick = () => selectAnswer(idx);
+
+        const badge = document.createElement('span');
+        badge.className = 'shrink-0 w-9 h-9 rounded-xl bg-black/25 border border-white/20 flex items-center justify-center font-black text-sm sm:text-base';
+        badge.textContent = LETTERS[idx];
+
+        const txt = document.createElement('span');
+        txt.className = 'flex-1 leading-snug break-words';
+        txt.textContent = optText;
+
+        const icon = document.createElement('span');
+        icon.className = 'shrink-0 text-xl font-black';
+        if (isAnswered) {
+          if (idx === q.a) icon.textContent = '✓';
+          else if (idx === ua) icon.textContent = '✕';
+        }
+
+        btn.appendChild(badge);
+        btn.appendChild(txt);
+        btn.appendChild(icon);
+        grid.appendChild(btn);
+      });
+
+      // Feedback & Buttons
+      const fb = document.getElementById('quiz-feedback');
+      const btnNext = document.getElementById('btn-next');
+      const btnPrev = document.getElementById('btn-prev');
+
+      btnNext.textContent = state.currentIndex === total - 1 ? 'Нәтижені көру 🏁' : 'Келесі →';
+      if (isStudy || isExam) {
+        btnPrev.disabled = state.currentIndex === 0;
+        btnPrev.classList.toggle('opacity-40', state.currentIndex === 0);
+        btnNext.disabled = false;
+        renderNavigator();
+      } else {
+        btnNext.disabled = !isAnswered;
+      }
+
+      if (!isAnswered) {
+        fb.className = 'text-xs sm:text-base font-bold text-indigo-200';
+        fb.textContent = 'Жауап нұсқасын таңдаңыз (A–D немесе 1–4)';
+        if (!isStudy && !isExam) startQuestionTimer();
+      } else if (ua === q.a) {
+        fb.className = 'text-xs sm:text-base font-extrabold text-emerald-300';
+        fb.textContent = '✅ Correct! Дұрыс жауап!';
+      } else if (ua === -1) {
+        fb.className = 'text-xs sm:text-base font-extrabold text-amber-300';
+        fb.textContent = `⏰ Time is up! Дұрыс жауап: ${LETTERS[q.a]}) ${q.o[q.a]}`;
+      } else {
+        fb.className = 'text-xs sm:text-base font-extrabold text-rose-300';
+        fb.textContent = `❌ Incorrect! Дұрыс жауап: ${LETTERS[q.a]}) ${q.o[q.a]}`;
+      }
+    }
+
+    function toggleReadingTranslation() {
+      state.showTranslation = !state.showTranslation;
+      document.getElementById('q-reading-kz').classList.toggle('hidden', !state.showTranslation);
+      SoundFX.click();
+    }
+
+    function renderNavigator() {
+      const nav = document.getElementById('nav-items');
+      nav.innerHTML = '';
+      state.questions.forEach((q, idx) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = idx + 1;
+        const ans = state.answers[idx];
+        let c = 'w-8 h-8 rounded-lg text-xs font-extrabold transition ';
+        if (ans === null) c += 'bg-[#090d16] border border-indigo-500/40 text-indigo-200 hover:bg-indigo-800/60';
+        else if (ans === q.a) c += 'bg-emerald-600 text-white';
+        else c += 'bg-rose-600 text-white';
+        if (idx === state.currentIndex) c += ' ring-2 ring-white scale-105';
+        b.className = c;
+        b.onclick = () => {
+          state.currentIndex = idx;
+          renderQuestion();
+        };
+        nav.appendChild(b);
+      });
+    }
+
+    /* =========================================================================
+       12. ANSWER SELECTION & TIMERS
+       ========================================================================= */
+    function startQuestionTimer() {
+      state.timeLeft = GAME_SEC;
+      updateTimerUI();
+      state.timerId = setInterval(() => {
+        state.timeLeft--;
+        updateTimerUI();
+        if (state.timeLeft <= 0) {
+          clearTimer();
+          if (state.answers[state.currentIndex] === null) {
+            const q = state.questions[state.currentIndex];
+            state.answers[state.currentIndex] = -1;
+            state.streak = 0;
+            recordAnswerInStore(q.id, false, state.quizType === 'mistakes');
+            SoundFX.wrong();
+            renderQuestion();
+          }
+        }
+      }, 1000);
+    }
+
+    function startExamTimer() {
+      updateTimerUI();
+      state.timerId = setInterval(() => {
+        state.timeLeft--;
+        updateTimerUI();
+        if (state.timeLeft <= 0) {
+          clearTimer();
+          finishQuiz();
+        }
+      }, 1000);
+    }
+
+    function updateTimerUI() {
+      const isExam = state.quizType === 'exam';
+      document.getElementById('hud-timer').textContent = isExam ? formatMMSS(state.timeLeft) : `${state.timeLeft}с`;
+      const warn = isExam ? state.timeLeft <= 300 : state.timeLeft <= 10;
+      document.getElementById('hud-timer-box').className = warn
+        ? 'px-3 py-1.5 rounded-xl bg-rose-500/25 border border-rose-400 text-rose-200 font-extrabold text-xs sm:text-sm min-w-[70px] text-center animate-pulse'
+        : 'px-3 py-1.5 rounded-xl bg-[#090d16] border border-cyan-400/40 text-cyan-300 font-extrabold text-xs sm:text-sm min-w-[70px] text-center';
+    }
+
+    function spawnScorePopup(pts) {
+      const anchor = document.getElementById('score-popup-anchor');
+      const el = document.createElement('div');
+      el.className = 'score-float text-emerald-300 font-black text-base whitespace-nowrap';
+      el.textContent = `+${pts}`;
+      anchor.appendChild(el);
+      setTimeout(() => el.remove(), 950);
+    }
+
+    function selectAnswer(idx) {
+      if (state.answers[state.currentIndex] !== null) return;
+      if (state.quizType !== 'exam') clearTimer();
+
+      const q = state.questions[state.currentIndex];
+      state.answers[state.currentIndex] = idx;
+      const isOk = idx === q.a;
+
+      recordAnswerInStore(q.id, isOk, state.quizType === 'mistakes');
+
+      if (isOk) {
+        state.streak++;
+        if (state.streak > state.bestStreak) state.bestStreak = state.streak;
+        if (state.quizType === 'exam' || state.mode === 'game') {
+          const speedBonus = state.quizType === 'exam' ? 200 : Math.round((state.timeLeft / GAME_SEC) * 500);
+          const streakBonus = Math.min(state.streak - 1, 5) * 100;
+          const pts = 1000 + speedBonus + streakBonus;
+          state.score += pts;
+          spawnScorePopup(pts);
+        } else {
+          state.score += 100;
+        }
+        SoundFX.correct(state.streak);
+      } else {
+        state.streak = 0;
+        SoundFX.wrong();
+      }
+      renderQuestion();
+    }
+
+    function nextQuestion() {
+      SoundFX.click();
+      if (state.currentIndex < state.questions.length - 1) {
+        state.currentIndex++;
+        renderQuestion();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    function prevQuestion() {
+      if (state.currentIndex > 0) {
+        SoundFX.click();
+        state.currentIndex--;
+        renderQuestion();
+      }
+    }
+
+    /* =========================================================================
+       13. FINISH & RESULTS
+       ========================================================================= */
+    function burstConfetti() {
+      const layer = document.getElementById('confetti-layer');
+      layer.innerHTML = '';
+      const colors = ['#6366f1', '#06b6d4', '#f59e0b', '#10b981', '#f43f5e', '#a855f7'];
+      for (let i = 0; i < 65; i++) {
+        const p = document.createElement('div');
+        p.className = 'confetti-piece';
+        p.style.left = `${Math.random() * 100}vw`;
+        p.style.backgroundColor = colors[i % colors.length];
+        p.style.animationDuration = `${2.1 + Math.random() * 1.9}s`;
+        p.style.animationDelay = `${Math.random() * 0.45}s`;
+        layer.appendChild(p);
+      }
+      setTimeout(() => { layer.innerHTML = ''; }, 4500);
+    }
+
+    function finishQuiz() {
+      clearTimer();
+      const elapsed = Math.max(1, Math.round((Date.now() - state.startTime) / 1000));
+      const total = state.questions.length;
+      let correct = 0;
+      state.questions.forEach((q, i) => { if (state.answers[i] === q.a) correct++; });
+      const wrong = total - correct;
+      const pct = Math.round((correct / total) * 100);
+
+      saveQuizBest(state.quizKey, pct, correct, total);
+      SoundFX.finish(pct >= 80);
+      if (pct >= 80) burstConfetti();
+
+      document.getElementById('res-emoji').textContent = pct >= 80 ? '🏆' : pct >= 60 ? '🔥' : '💪';
+      document.getElementById('res-heading').textContent = pct >= 80 ? 'Outstanding! Керемет!' : pct >= 60 ? 'Good Job! Жақсы нәтиже!' : 'Keep practicing! Қатемен жұмыс істейік!';
+      document.getElementById('res-subtitle').textContent = state.quizTitle;
+      document.getElementById('res-percent').textContent = `${pct}%`;
+      document.getElementById('res-correct').textContent = `${correct} / ${total}`;
+      document.getElementById('res-score').textContent = state.score.toLocaleString('ru-RU');
+      document.getElementById('res-streak').textContent = `🔥 ${state.bestStreak}`;
+      document.getElementById('res-time').textContent = formatMMSS(elapsed);
+
+      const examBadge = document.getElementById('res-exam-badge');
+      if (state.quizType === 'exam') {
+        examBadge.classList.remove('hidden');
+        if (correct >= 40) {
+          examBadge.className = 'mt-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs sm:text-sm font-black bg-emerald-500/20 border border-emerald-400 text-emerald-200';
+          examBadge.textContent = `✅ 40+/50 МЕЖЕСІ ОРЫНДАЛДЫ! (${correct}/50)`;
+        } else {
+          examBadge.className = 'mt-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs sm:text-sm font-black bg-amber-500/20 border border-amber-400 text-amber-200';
+          examBadge.textContent = `🎯 40/50 межесіне тағы ${40 - correct} дұрыс жауап жетпейді`;
+        }
+      } else {
+        examBadge.classList.add('hidden');
+      }
+
+      document.getElementById('res-wrong-count').textContent = wrong;
+      document.getElementById('btn-retry-wrong').classList.toggle('hidden', wrong === 0);
+
+      showScreen('screen-results');
+
+      // Animate SVG gauge
+      const circ = 2 * Math.PI * 52;
+      const circle = document.getElementById('res-gauge-circle');
+      circle.style.strokeDashoffset = circ;
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          circle.style.strokeDashoffset = circ * (1 - pct / 100);
+        }, 60);
+      });
+
+      renderReview('all');
+    }
+
+    function renderReview(filter) {
+      document.getElementById('rev-filter-all').className = filter === 'all' ? 'px-3 py-1.5 rounded-lg bg-indigo-600 text-white' : 'px-3 py-1.5 rounded-lg text-indigo-300';
+      document.getElementById('rev-filter-wrong').className = filter === 'wrong' ? 'px-3 py-1.5 rounded-lg bg-rose-600 text-white' : 'px-3 py-1.5 rounded-lg text-indigo-300';
+
+      const container = document.getElementById('review-container');
+      container.innerHTML = '';
+      let shown = 0;
+
+      state.questions.forEach((q, i) => {
+        const ua = state.answers[i];
+        const ok = ua === q.a;
+        if (filter === 'wrong' && ok) return;
+        shown++;
+
+        const d = document.createElement('details');
+        d.className = `rounded-2xl border p-4 ${ok ? 'bg-emerald-950/30 border-emerald-500/35' : 'bg-rose-950/35 border-rose-500/40'}`;
+        if (!ok) d.open = true;
+
+        const uTxt = ua === null ? 'Белгіленбеген' : ua === -1 ? 'Уақыт аяқталды' : `${LETTERS[ua]}) ${q.o[ua]}`;
+        d.innerHTML = `
+          <summary class="cursor-pointer list-none flex items-start justify-between gap-2 font-bold text-sm sm:text-base text-white">
+            <div class="flex items-start gap-2">
+              <span class="shrink-0">${ok ? '✅' : '❌'}</span>
+              <span>${i + 1}. ${q.q}</span>
+            </div>
+            <span class="text-xs text-indigo-300 mt-1">▼</span>
+          </summary>
+          <div class="mt-3 pt-3 border-t border-white/10 space-y-1.5 text-xs sm:text-sm">
+            <div class="${ok ? 'text-emerald-300' : 'text-rose-300'} font-semibold">Сіздің жауабыңыз: ${uTxt}</div>
+            ${!ok ? `<div class="text-emerald-300 font-bold">Дұрыс жауап: ${LETTERS[q.a]}) ${q.o[q.a]}</div>` : ''}
+            ${q.e ? `<div class="text-indigo-200/90 bg-indigo-950/60 px-3 py-2 rounded-xl">💡 <strong>Түсіндірме:</strong> ${q.e}</div>` : ''}
+          </div>
+        `;
+        container.appendChild(d);
+      });
+
+      if (shown === 0) {
+        container.innerHTML = '<div class="text-center py-6 text-emerald-300 font-bold">🎉 Барлық сұраққа дұрыс жауап берілді!</div>';
+      }
+    }
+
+    /* =========================================================================
+       14. MODALS & KEYBOARD HANDLERS
+       ========================================================================= */
+    function openExitModal() { SoundFX.click(); document.getElementById('modal-exit').classList.remove('hidden'); }
+    function openClearMistakesModal() { SoundFX.click(); document.getElementById('modal-clear-mistakes').classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+    function confirmExit() { closeModal('modal-exit'); goHome(); }
+    function confirmClearMistakes() {
+      const store = loadStore();
+      store.mistakes = [];
+      saveStore(store);
+      closeModal('modal-clear-mistakes');
+      renderDashboard();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      const quizOpen = !document.getElementById('screen-quiz').classList.contains('hidden');
+      const exitOpen = !document.getElementById('modal-exit').classList.contains('hidden');
+      if (!quizOpen || exitOpen) return;
+
+      const k = e.key.toLowerCase();
+      const map = { '1': 0, '2': 1, '3': 2, '4': 3, 'a': 0, 'b': 1, 'c': 2, 'd': 3 };
+      if (k in map) {
+        e.preventDefault();
+        selectAnswer(map[k]);
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        const nextBtn = document.getElementById('btn-next');
+        if (!nextBtn.disabled) { e.preventDefault(); nextQuestion(); }
+      } else if (e.key === 'ArrowRight') {
+        const nextBtn = document.getElementById('btn-next');
+        if (!nextBtn.disabled) { e.preventDefault(); nextQuestion(); }
+      } else if (e.key === 'ArrowLeft' && (state.mode === 'study' || state.quizType === 'exam')) {
+        e.preventDefault();
+        prevQuestion();
+      }
+    });
+
+    /* =========================================================================
+       15. INITIALIZATION
+       ========================================================================= */
+    window.addEventListener('load', () => {
+      renderDashboard();
+      renderSlivsGrid();
+      renderTextsGrid();
+      renderCribSheet();
+    });
+  </script>
+</body>
+</html>
